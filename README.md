@@ -68,3 +68,22 @@ then the generated extension methods will be named `AllowHasFlag1`, `AllowHasFla
 
 ## Installation
 
+### DotNet CLI
+
+```bash
+dotnet add package HasFlagExtension
+```
+
+### NuGet CLI
+
+```bash
+Package-Install HasFlagExtension
+```
+
+### .csproj
+
+```xml
+<ItemGroup>
+    <PackageReference Include="HasFlagExtension" Version="1.0.0"/>
+</ItemGroup>
+```
