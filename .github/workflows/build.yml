@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - 'HasFlagExtension/**'
+      - 'HasFlagExtension.Tests/**'
 
 jobs:
   build:
@@ -18,7 +19,7 @@ jobs:
 
     env:
       Solution_Name: HasFlagExtension.sln
-      Test_Project_Path: HasFlagExtension\HasFlagExtension.csproj
+      Test_Project_Path: HasFlagExtension.Tests\HasFlagExtension.Tests.csproj
 
     steps:
     - name: Checkout

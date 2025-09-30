@@ -9,7 +9,7 @@ on:
 env:
   Solution_Name: HasFlagExtension.sln
   Project_Path: HasFlagExtension\HasFlagExtension.csproj
-  # Test_Project_Path: HasFlagExtension.Tests\HasFlagExtension.Tests.csproj
+  Test_Project_Path: HasFlagExtension.Tests\HasFlagExtension.Tests.csproj
 
 jobs:
   build:
