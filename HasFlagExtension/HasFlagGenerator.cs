@@ -5,13 +5,23 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Xunit.Abstractions;
 
 namespace HasFlagExtension;
 
 [Generator]
 public class HasFlagGenerator : IIncrementalGenerator {
+
+    private readonly ITestOutputHelper? _testOutputHelper;
+    
+    public HasFlagGenerator(ITestOutputHelper? testOutputHelper = null) {
+        _testOutputHelper = testOutputHelper;
+    }
+    
+    public HasFlagGenerator() { }
     
     public void Initialize(IncrementalGeneratorInitializationContext context) {
+        
         // Gather all enum declarations
         var enumDeclarations = context.SyntaxProvider.CreateSyntaxProvider(
             static (node, _) => node is EnumDeclarationSyntax,
@@ -49,7 +59,8 @@ public class HasFlagGenerator : IIncrementalGenerator {
 
                     string? prefix = null;
                     if (prefixAttribute is not null && prefixAttribute.ConstructorArguments.Length > 0) {
-                        prefix = prefixAttribute.ConstructorArguments[0].Value?.ToString();
+                        var rawPrefix = prefixAttribute.ConstructorArguments[0].Value;
+                        prefix = rawPrefix as string ?? rawPrefix?.ToString();
                     }
                     
                     // Collect enum members (exclude special ones without constant value)
@@ -69,19 +80,21 @@ public class HasFlagGenerator : IIncrementalGenerator {
             });
 
         // Generate one file per enum
-        context.RegisterSourceOutput(flaggedEnums, static (spc, enums) => {
+        context.RegisterSourceOutput(flaggedEnums, (spc, enums) => {
             foreach (var e in enums) {
-                var source = GenerateExtensionsSource(e);
-                spc.AddSource($"{e.SymbolName}_HasFlagExtensions.g.cs", source);
+                var source = GenerateExtensionsSource(e, _testOutputHelper);
+                spc.AddSource($"{e.SymbolName}Extensions.g.cs", source);
                 Console.WriteLine(source + '\n');
             }
         });
     }
 
-    private static string GenerateExtensionsSource(FlagEnumInfo info) {
+    private static string GenerateExtensionsSource(FlagEnumInfo info, ITestOutputHelper? testOutputHelper = null) {
         var ns = info.Namespace;
         var enumName = info.SymbolName;
-        var extTypeName = enumName + "HasFlagExtension";
+        var extTypeName = enumName + "Extensions";
+        
+        testOutputHelper?.WriteLine(info.Prefix);
 
         var sb = new StringBuilder();
         sb.AppendLine($"""
@@ -89,6 +102,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
                        
                        using System; 
                        using System.Diagnostics.Contracts;
+                       
                        """);
         
         if (!string.IsNullOrEmpty(ns)) {
@@ -97,8 +111,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
         }
 
         sb.AppendLine($$"""
-                        internal static partial class {{extTypeName}} {
-                        
+                            public static partial class {{extTypeName}} {
                         """);
         
         // Generate methods: public static bool HasFlag{Name}(this EnumType value)
@@ -107,21 +120,20 @@ public class HasFlagGenerator : IIncrementalGenerator {
             
             sb.AppendLine($"""
                            
-                                /// <summary>
-                                /// Returns true if any of the bits for {m.Name} are set in the value.
-                                /// </summary>
-                                [Pure]
-                                public static bool Get{methodName}(this {enumName} value) => value.HasFlag({enumName}.{m.Name});
+                                   /// <summary>
+                                   /// Returns true if any of the bits for {m.Name} are set in the value.
+                                   /// </summary>
+                                   [Pure]
+                                   public static bool Get{methodName}(this {enumName} value) => value.HasFlag({enumName}.{m.Name});
                            """);
         }
 
         // Generate Extension Members
-        
-        
         sb.AppendLine($$"""
+                        
                         #if NET10_0_OR_GREATER
-                           
-                            extension({{enumName}} value) {
+                        
+                                extension({{enumName}} value) {
                         """);
 
         foreach (var m in info.Members) {
@@ -129,23 +141,23 @@ public class HasFlagGenerator : IIncrementalGenerator {
 
             sb.AppendLine($"""
                            
-                                   /// <summary>
-                                   /// Returns true if any of the bits for {m.Name} are set in the value.
-                                   /// </summary>
-                                   public bool {propertyName} => value.HasFlag({enumName}.{m.Name});
+                                       /// <summary>
+                                       /// Returns true if any of the bits for {m.Name} are set in the value.
+                                       /// </summary>
+                                       public bool {propertyName} => value.HasFlag({enumName}.{m.Name});
                            """);
         }
 
         sb.AppendLine("""
-                          }
-                          
+                              }
+                      
                       #endif
+                      
                       """);
         
-        sb.AppendLine("}");
+        sb.AppendLine("    }");
         if (!string.IsNullOrEmpty(ns)) {
-            sb.AppendLine();
-            sb.AppendLine("}");
+            sb.Append("}");
         }
 
         return sb.ToString();
@@ -182,12 +194,15 @@ public class HasFlagGenerator : IIncrementalGenerator {
     }
 
     private readonly record struct FlagEnumInfo(INamedTypeSymbol Symbol, ImmutableArray<EnumMemberInfo> Members, string? Prefix = null) {
+        private readonly string? _prefix = Prefix;
+
         public string Namespace => Symbol.ContainingNamespace?.IsGlobalNamespace == false
             ? Symbol.ContainingNamespace.ToDisplayString()
             : string.Empty;
         public string SymbolName => Symbol.Name;
         public INamedTypeSymbol Symbol { get; } = Symbol;
         public ImmutableArray<EnumMemberInfo> Members { get; } = Members;
-        public string Prefix { get; } = Prefix ?? "Has";
+
+        public string Prefix => _prefix ?? "Has";
     }
 }
