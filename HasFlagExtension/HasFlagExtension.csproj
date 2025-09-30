@@ -11,6 +11,14 @@
         <RootNamespace>HasFlagExtension</RootNamespace>
         <PackageId>HasFlagExtension</PackageId>
         <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
+        
+        <Authors>KryKom</Authors>
+        <Company>KryKom</Company>
+        <Version>1.0.0</Version>
+        <PackageProjectUrl>https://github.com/KryKomDev/HasFlagExtension</PackageProjectUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Description>C# source generator for generating extension methods and properties for flag enums.</Description>
     </PropertyGroup>
 
     <ItemGroup>

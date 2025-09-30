@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HasFlagExtension", "HasFlagExtension\HasFlagExtension\HasFlagExtension.csproj", "{091B56D3-1FD8-4C4C-933C-609B17ED36DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HasFlagExtension", "HasFlagExtension\HasFlagExtension.csproj", "{091B56D3-1FD8-4C4C-933C-609B17ED36DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HasFlagExtension.Sample", "HasFlagExtension\HasFlagExtension.Sample\HasFlagExtension.Sample.csproj", "{76E756C1-4222-4973-A0B5-898F9AD5C3BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HasFlagExtension.Sample", "HasFlagExtension.Sample\HasFlagExtension.Sample.csproj", "{76E756C1-4222-4973-A0B5-898F9AD5C3BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HasFlagExtension.Tests", "HasFlagExtension\HasFlagExtension.Tests\HasFlagExtension.Tests.csproj", "{E9451B4C-9D33-48A7-91BF-5A5138994A19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HasFlagExtension.Tests", "HasFlagExtension.Tests\HasFlagExtension.Tests.csproj", "{E9451B4C-9D33-48A7-91BF-5A5138994A19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
