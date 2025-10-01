@@ -28,13 +28,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0"/>
+        <PackageReference Include="xunit.abstractions" Version="2.0.3" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="xunit.abstractions">
-        <HintPath>..\..\..\.nuget\packages\xunit.abstractions\2.0.3\lib\netstandard2.0\xunit.abstractions.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-
+    
 </Project>
