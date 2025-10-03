@@ -27,16 +27,16 @@ jobs:
         dotnet-version: '10.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore $env:ProjectPath
+      run: dotnet restore ${{ env:ProjectPath }}
 
     - name: Build
-      run: dotnet build $env:ProjectPath --configuration Release --no-restore
+      run: dotnet build ${{ env:ProjectPath }} --configuration Release --no-restore
   
     - name: Test
-      run: dotnet test $env:TestProjectPath
+      run: dotnet test ${{ env:TestProjectPath }}
 
     - name: Pack
-      run: dotnet pack $env:ProjectPath --configuration Release --no-build --output ./nupkg
+      run: dotnet pack ${{ env:ProjectPath }} --configuration Release --no-build --output ./nupkg
 
     - name: Push to NuGet
       run: |
