@@ -10,6 +10,7 @@ env:
   SolutionName: ./HasFlagExtension.sln
   ProjectPath: ./HasFlagExtension/HasFlagExtension.csproj
   TestProjectPath: ./HasFlagExtension.Tests/HasFlagExtension.Tests.csproj
+  NugetOutputDir: ./nupkg/
 
 jobs:
   build:
@@ -36,11 +37,11 @@ jobs:
       run: dotnet test ${{ env.TestProjectPath }}
 
     - name: Pack
-      run: dotnet pack ${{ env.ProjectPath }} --configuration Release --no-build --output ./nupkg
+      run: dotnet pack ${{ env.ProjectPath }} --configuration Release --no-build --output ${{ env.NugetOutputDir }}
 
     - name: Push to NuGet
       run: |
-        Get-ChildItem ./HasFlagExtension/nupkg/*.nupkg | ForEach-Object {
+        Get-ChildItem ${{ env.NugetOutputDir }}*.nupkg | ForEach-Object {
           dotnet nuget push $_.FullName --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
         }
       shell: pwsh
