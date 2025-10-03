@@ -88,6 +88,7 @@ public class HasFlagGeneratorTests {
     // [InlineData("Allow")]
     public void GenerateHasFlagMethods(string prefix) {
         var generator = new HasFlagGenerator();
+        
         var driver = CSharpGeneratorDriver.Create(generator);
 
         var compilation = CSharpCompilation.Create(nameof(HasFlagGeneratorTests),

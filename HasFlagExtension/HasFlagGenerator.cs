@@ -10,7 +10,7 @@ namespace HasFlagExtension;
 
 [Generator]
 public class HasFlagGenerator : IIncrementalGenerator {
-    
+
     public void Initialize(IncrementalGeneratorInitializationContext context) {
         
         // Gather all enum declarations
@@ -51,7 +51,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
                     string? prefix = null;
                     if (prefixAttribute is not null && prefixAttribute.ConstructorArguments.Length > 0) {
                         var rawPrefix = prefixAttribute.ConstructorArguments[0].Value;
-                        prefix = rawPrefix as string ?? rawPrefix?.ToString();
+                        prefix = rawPrefix as string ?? null;
                     }
                     
                     // Collect enum members (exclude special ones without constant value)
