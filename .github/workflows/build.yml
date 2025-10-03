@@ -40,4 +40,4 @@ jobs:
       run: dotnet test --no-restore
 
     - name: Restore the application
-      run: dotnet restore $env:Solution_Name
+      run: dotnet restore
