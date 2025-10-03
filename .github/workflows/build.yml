@@ -37,7 +37,7 @@ jobs:
       run: dotnet build
 
     - name: Execute unit tests
-      run: dotnet test $env:Test_Project_Path --no-restore
+      run: dotnet test --no-restore
 
     - name: Restore the application
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
