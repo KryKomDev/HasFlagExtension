@@ -7,7 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\HasFlagExtension\HasFlagExtension.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+        <ProjectReference Include="..\HasFlagExtension\HasFlagExtension.csproj" />
+        <ProjectReference Include="..\HasFlagExtension\HasFlagExtension.csproj" 
+                          OutputItemType="Analyzer" 
+                          ReferenceOutputAssembly="false" />
     </ItemGroup>
 
 </Project>

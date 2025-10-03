@@ -87,7 +87,7 @@ public class HasFlagGeneratorTests {
     [InlineData("Has")] // TODO: figure out why the frikin generator doesn't work with nothing else but 'Has' in tests
     // [InlineData("Allow")]
     public void GenerateHasFlagMethods(string prefix) {
-        var generator = new HasFlagGenerator(_testOutputHelper);
+        var generator = new HasFlagGenerator();
         var driver = CSharpGeneratorDriver.Create(generator);
 
         var compilation = CSharpCompilation.Create(nameof(HasFlagGeneratorTests),

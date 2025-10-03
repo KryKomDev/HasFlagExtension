@@ -5,20 +5,11 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Xunit.Abstractions;
 
 namespace HasFlagExtension;
 
 [Generator]
 public class HasFlagGenerator : IIncrementalGenerator {
-
-    private readonly ITestOutputHelper? _testOutputHelper;
-    
-    public HasFlagGenerator(ITestOutputHelper? testOutputHelper = null) {
-        _testOutputHelper = testOutputHelper;
-    }
-    
-    public HasFlagGenerator() { }
     
     public void Initialize(IncrementalGeneratorInitializationContext context) {
         
@@ -80,21 +71,19 @@ public class HasFlagGenerator : IIncrementalGenerator {
             });
 
         // Generate one file per enum
-        context.RegisterSourceOutput(flaggedEnums, (spc, enums) => {
+        context.RegisterSourceOutput(flaggedEnums, static (spc, enums) => {
             foreach (var e in enums) {
-                var source = GenerateExtensionsSource(e, _testOutputHelper);
+                var source = GenerateExtensionsSource(e);
                 spc.AddSource($"{e.SymbolName}Extensions.g.cs", source);
                 Console.WriteLine(source + '\n');
             }
         });
     }
 
-    private static string GenerateExtensionsSource(FlagEnumInfo info, ITestOutputHelper? testOutputHelper = null) {
+    private static string GenerateExtensionsSource(FlagEnumInfo info) {
         var ns = info.Namespace;
         var enumName = info.SymbolName;
         var extTypeName = enumName + "Extensions";
-        
-        testOutputHelper?.WriteLine(info.Prefix);
 
         var sb = new StringBuilder();
         sb.AppendLine($"""
