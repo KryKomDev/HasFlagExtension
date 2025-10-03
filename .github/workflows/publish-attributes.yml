@@ -1,7 +1,7 @@
 # HasFlagExtension
 # by KryKom with love and care :)
 
-name: Publish HasFlagExtension to NuGet
+name: Publish HasFlagExtension.Attributes to NuGet
 
 on:   
   workflow_dispatch:
