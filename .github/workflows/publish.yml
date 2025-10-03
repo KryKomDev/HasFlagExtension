@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
 
 env:
-  SolutionName: .\HasFlagExtension.sln
-  ProjectPath: .\HasFlagExtension\HasFlagExtension.csproj
-  TestProjectPath: .\HasFlagExtension.Tests\HasFlagExtension.Tests.csproj
+  SolutionName: ./HasFlagExtension.sln
+  ProjectPath: ./HasFlagExtension/HasFlagExtension.csproj
+  TestProjectPath: ./HasFlagExtension.Tests/HasFlagExtension.Tests.csproj
 
 jobs:
   build:
