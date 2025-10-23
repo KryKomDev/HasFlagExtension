@@ -2,9 +2,24 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>14</LangVersion>
         <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+
+        <OutputType>Library</OutputType>
+
         <RootNamespace>HasFlagExtension</RootNamespace>
+        <PackageId>HasFlagExtension.Attributes</PackageId>
+        <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
+
+        <Authors>KryKom</Authors>
+        <Company>KryKom</Company>
+        <Version>1.0.1</Version>
+        <PackageProjectUrl>https://github.com/KryKomDev/HasFlagExtension</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Description>C# source generator for generating extension methods and properties for flag enums.</Description>
+
+        <RepositoryUrl>https://github.com/KryKomDev/HasFlagExtension</RepositoryUrl>
     </PropertyGroup>
 
 </Project>

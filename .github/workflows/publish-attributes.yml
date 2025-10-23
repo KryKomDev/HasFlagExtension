@@ -1,0 +1,47 @@
+# HasFlagExtension
+# by KryKom with love and care :)
+
+name: Publish HasFlagExtension.Attributes to NuGet
+
+on:   
+  workflow_dispatch:
+
+env:
+  SolutionName: ./HasFlagExtension.sln
+  ProjectPath: ./HasFlagExtension.Attributes/HasFlagExtension.Attributes.csproj
+  TestProjectPath: ./HasFlagExtension.Tests/HasFlagExtension.Tests.csproj
+  NugetOutputDir: ./nupkg/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.ProjectPath }}
+
+    - name: Build
+      run: dotnet build ${{ env.ProjectPath }} --configuration Release --no-restore
+  
+    - name: Test
+      run: dotnet test ${{ env.TestProjectPath }}
+
+    - name: Pack
+      run: dotnet pack ${{ env.ProjectPath }} --configuration Release --no-build --output ${{ env.NugetOutputDir }}
+
+    - name: Push to NuGet
+      run: |
+        Get-ChildItem ${{ env.NugetOutputDir }}*.nupkg | ForEach-Object {
+          dotnet nuget push $_.FullName --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        }
+      shell: pwsh
