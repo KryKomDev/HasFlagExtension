@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
         <LangVersion>14</LangVersion>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
@@ -10,7 +10,6 @@
 
         <RootNamespace>HasFlagExtension</RootNamespace>
         <PackageId>HasFlagExtension.Attributes</PackageId>
-        <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
 
         <Authors>KryKom</Authors>
         <Company>KryKom</Company>
