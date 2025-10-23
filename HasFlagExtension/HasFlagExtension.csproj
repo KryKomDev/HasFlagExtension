@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <IsPackable>false</IsPackable>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
 
@@ -10,15 +9,21 @@
 
         <RootNamespace>HasFlagExtension</RootNamespace>
         <PackageId>HasFlagExtension</PackageId>
-        <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
+        <TargetFramework>netstandard2.0</TargetFramework>
         
+        <IncludeSymbols>true</IncludeSymbols>
+        <IncludeSource>true</IncludeSource>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        
+        <PackageId>HasFlagExtension</PackageId>
         <Authors>KryKom</Authors>
         <Company>KryKom</Company>
-        <Version>1.0.0</Version>
+        <Version>1.0.3</Version>
         <PackageProjectUrl>https://github.com/KryKomDev/HasFlagExtension</PackageProjectUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Description>C# source generator for generating extension methods and properties for flag enums.</Description>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
     </PropertyGroup>
 
     <ItemGroup>
@@ -29,5 +34,18 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0"/>
     </ItemGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="../HasFlagExtension.Attributes/HasFlagExtension.Attributes.csproj" GeneratePathProperty="true"/>
+    </ItemGroup>
 
+    <!-- Pack the generator assembly -->
+    <ItemGroup>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    </ItemGroup>
+
+    <!-- Pack the attributes assembly so consumers don't need a separate reference -->
+    <ItemGroup>
+        <None Include="$(PkgHasFlagExtension_Attributes)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="false" />
+    </ItemGroup>
 </Project>

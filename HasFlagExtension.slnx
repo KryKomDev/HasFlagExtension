@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="HasFlagExtension.Attributes/HasFlagExtension.Attributes.csproj" />
+  <Project Path="HasFlagExtension.Sample/HasFlagExtension.Sample.csproj" />
+  <Project Path="HasFlagExtension.Tests/HasFlagExtension.Tests.csproj" />
+  <Project Path="HasFlagExtension/HasFlagExtension.csproj" />
+</Solution>

@@ -17,7 +17,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
         var enumDeclarations = context.SyntaxProvider.CreateSyntaxProvider(
             static (node, _) => node is EnumDeclarationSyntax,
             static (ctx, _) => (EnumDeclarationSyntax)ctx.Node
-        );
+        ).Where(static m => m is not null);
 
         // Combine with compilation to inspect attributes and symbols
         var flaggedEnums = context.CompilationProvider.Combine(enumDeclarations.Collect())
@@ -40,12 +40,13 @@ public class HasFlagGenerator : IIncrementalGenerator {
                     if (!hasFlags)
                         continue;
 
-                    // Detect prefix attribute
+                    // Detect a prefix attribute
                     var prefixAttribute = enumSymbol
                         .GetAttributes()
                         .FirstOrDefault(
-                            a => a.AttributeClass?.ToDisplayString() is 
-                                "HasFlagPrefixAttribute" or "HasFlagExtension.HasFlagPrefixAttribute"
+                            static a => a.AttributeClass?.ToDisplayString() is 
+                                nameof(HasFlagPrefixAttribute) or 
+                                $"{nameof(HasFlagExtension)}.{nameof(HasFlagPrefixAttribute)}"
                         );
 
                     string? prefix = null;

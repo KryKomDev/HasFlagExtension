@@ -8,8 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\HasFlagExtension\HasFlagExtension.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="..\HasFlagExtension.Attributes\HasFlagExtension.Attributes.csproj" />
+        <PackageReference Include="HasFlagExtension" Version="1.0.2" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\HasFlagExtension.Attributes\HasFlagExtension.Attributes.csproj" />
+    </ItemGroup>
 </Project>
