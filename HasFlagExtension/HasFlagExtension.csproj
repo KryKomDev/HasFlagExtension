@@ -18,7 +18,7 @@
         <PackageId>HasFlagExtension</PackageId>
         <Authors>KryKom</Authors>
         <Company>KryKom</Company>
-        <Version>1.0.3</Version>
+        <Version>1.1.0</Version>
         <PackageProjectUrl>https://github.com/KryKomDev/HasFlagExtension</PackageProjectUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -27,12 +27,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.0.0-1.25277.114">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0-2.final" />
+        <PackageReference Include="System.Collections.Immutable" Version="10.0.0-rc.2.25502.107" />
     </ItemGroup>
     
     <ItemGroup>

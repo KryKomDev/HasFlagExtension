@@ -1,3 +1,6 @@
+// HasFlagExtension Generator
+// Copyright (c) 2025 KryKom
+
 using System;
 using System.Collections.Immutable;
 using System.Linq;
@@ -17,7 +20,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
         var enumDeclarations = context.SyntaxProvider.CreateSyntaxProvider(
             static (node, _) => node is EnumDeclarationSyntax,
             static (ctx, _) => (EnumDeclarationSyntax)ctx.Node
-        ).Where(static m => m is not null);
+        ).Where(static e => e is not null);
 
         // Combine with compilation to inspect attributes and symbols
         var flaggedEnums = context.CompilationProvider.Combine(enumDeclarations.Collect())
@@ -33,12 +36,38 @@ public class HasFlagGenerator : IIncrementalGenerator {
                     // Must be an enum with [Flags]
                     if (enumSymbol.TypeKind != TypeKind.Enum)
                         continue;
+                    
+                    var hasFlags = enumSymbol.GetAttributes().Any(
+                        a => a.AttributeClass?.ToDisplayString() is 
+                            nameof(FlagsAttribute) or 
+                            $"{nameof(System)}.{nameof(FlagsAttribute)}"
+                    );
 
-                    var hasFlags = enumSymbol.GetAttributes().Any(a =>
-                        a.AttributeClass?.ToDisplayString() is "System.FlagsAttribute" or "FlagsAttribute");
-
+                    var access = enumSymbol.DeclaredAccessibility;
+                    
+                    // skip non-public or non-internal enums
+                    if (access is not Accessibility.Public and not Accessibility.Internal) 
+                        continue;
+                    
                     if (!hasFlags)
                         continue;
+
+                    // Detect an exclude attribute
+                    var excludeAttribute = enumSymbol
+                        .GetAttributes()
+                        .FirstOrDefault(
+                            static a => a.AttributeClass?.ToDisplayString() is
+                                nameof(ExcludeFlagEnumAttribute) or
+                                $"{nameof(HasFlagExtension)}.{nameof(ExcludeFlagEnumAttribute)}"
+                        );
+
+                    if (excludeAttribute is not null) {
+                        if (excludeAttribute.ConstructorArguments.Length == 0) continue;
+                        
+                        var exclude = excludeAttribute.ConstructorArguments[0].Value as string ?? null;
+                        
+                        if (exclude == "true") continue;
+                    }
 
                     // Detect a prefix attribute
                     var prefixAttribute = enumSymbol
@@ -58,14 +87,42 @@ public class HasFlagGenerator : IIncrementalGenerator {
                     // Collect enum members (exclude special ones without constant value)
                     var members = enumSymbol.GetMembers()
                         .OfType<IFieldSymbol>()
-                        .Where(f => f.HasConstantValue && f.ConstantValue is not null)
-                        .Select(f => new EnumMemberInfo(f.Name, f.ConstantValue))
+                        // .Where(f => f.HasConstantValue && f.ConstantValue is not null)
+                        .Where(static f => {
+                            var excludeAttribute = f.GetAttributes().FirstOrDefault(
+                                a => a.AttributeClass?.ToDisplayString() is
+                                    nameof(ExcludeFlagAttribute) or 
+                                    $"{nameof(HasFlagExtension)}.{nameof(ExcludeFlagAttribute)}"
+                            );
+
+                            if (excludeAttribute is null) return true;
+                            
+                            if (excludeAttribute.ConstructorArguments.Length == 0) return false;
+                            var exclude = excludeAttribute.ConstructorArguments[0].Value as string ?? null;
+                        
+                            return exclude != "true";
+                        })
+                        .Select(static f => {
+                            var displayNameAttribute = f.GetAttributes().FirstOrDefault(
+                                a => a.AttributeClass?.ToDisplayString() is
+                                    nameof(FlagDisplayNameAttribute) or
+                                    $"{nameof(HasFlagExtension)}.{nameof(FlagDisplayNameAttribute)}"
+                            );
+
+                            if (displayNameAttribute is null || displayNameAttribute.ConstructorArguments.Length <= 0)
+                                return new EnumMemberInfo(f.Name, f.ConstantValue);
+                            
+                            var displayNameObj = displayNameAttribute.ConstructorArguments[0].Value;
+                            var displayName    = displayNameObj as string ?? null;
+
+                            return new EnumMemberInfo(f.Name, f.ConstantValue, displayName);
+                        })
                         .ToImmutableArray();
 
                     if (members.Length == 0)
                         continue;
 
-                    result.Add(new FlagEnumInfo(enumSymbol, members, prefix));
+                    result.Add(new FlagEnumInfo(enumSymbol, members, access, prefix));
                 }
 
                 return result.ToImmutable();
@@ -76,7 +133,6 @@ public class HasFlagGenerator : IIncrementalGenerator {
             foreach (var e in enums) {
                 var source = GenerateExtensionsSource(e);
                 spc.AddSource($"{e.SymbolName}Extensions.g.cs", source);
-                Console.WriteLine(source + '\n');
             }
         });
     }
@@ -85,6 +141,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
         var ns = info.Namespace;
         var enumName = info.SymbolName;
         var extTypeName = enumName + "Extensions";
+        var am = info.Accessibility == Accessibility.Public ? "public" : "internal";
 
         var sb = new StringBuilder();
         sb.AppendLine($"""
@@ -101,12 +158,12 @@ public class HasFlagGenerator : IIncrementalGenerator {
         }
 
         sb.AppendLine($$"""
-                            public static partial class {{extTypeName}} {
+                            {{am}} static partial class {{extTypeName}} {
                         """);
         
         // Generate methods: public static bool HasFlag{Name}(this EnumType value)
         foreach (var m in info.Members) {
-            var methodName = info.Prefix + SafeIdentifier(m.Name);
+            var methodName = info.Prefix + (m.DisplayName ?? SafeIdentifier(m.Name));
             
             sb.AppendLine($"""
                            
@@ -114,7 +171,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
                                    /// Returns true if any of the bits for {m.Name} are set in the value.
                                    /// </summary>
                                    [Pure]
-                                   public static bool Get{methodName}(this {enumName} value) => value.HasFlag({enumName}.{m.Name});
+                                   {am} static bool Get{methodName}(this {enumName} value) => value.HasFlag({enumName}.{m.Name});
                            """);
         }
 
@@ -127,14 +184,14 @@ public class HasFlagGenerator : IIncrementalGenerator {
                         """);
 
         foreach (var m in info.Members) {
-            var propertyName = info.Prefix + SafeIdentifier(m.Name);
+            var propertyName = info.Prefix + (m.DisplayName ?? SafeIdentifier(m.Name));
 
             sb.AppendLine($"""
                            
                                        /// <summary>
                                        /// Returns true if any of the bits for {m.Name} are set in the value.
                                        /// </summary>
-                                       public bool {propertyName} => value.HasFlag({enumName}.{m.Name});
+                                       {am} bool {propertyName} => value.HasFlag({enumName}.{m.Name});
                            """);
         }
 
@@ -161,7 +218,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
         {
             return "@" + name;
         }
-
+        
         // Replace invalid identifier chars with underscore
         var sb = new StringBuilder(name.Length);
         for (int i = 0; i < name.Length; i++) {
@@ -178,12 +235,17 @@ public class HasFlagGenerator : IIncrementalGenerator {
         return id;
     }
 
-    private readonly record struct EnumMemberInfo(string Name, object? ConstantValue) {
+    private readonly record struct EnumMemberInfo(string Name, object? ConstantValue, string? DisplayName = null) {
         public string Name { get; } = Name;
         public object? ConstantValue { get; } = ConstantValue;
+        public string? DisplayName { get; } = DisplayName is null ? null : SafeIdentifier(DisplayName);
     }
 
-    private readonly record struct FlagEnumInfo(INamedTypeSymbol Symbol, ImmutableArray<EnumMemberInfo> Members, string? Prefix = null) {
+    private readonly record struct FlagEnumInfo(
+        INamedTypeSymbol Symbol,
+        ImmutableArray<EnumMemberInfo> Members,
+        Accessibility Accessibility, string? Prefix = null) 
+    {
         private readonly string? _prefix = Prefix;
 
         public string Namespace => Symbol.ContainingNamespace?.IsGlobalNamespace == false
@@ -192,6 +254,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
         public string SymbolName => Symbol.Name;
         public INamedTypeSymbol Symbol { get; } = Symbol;
         public ImmutableArray<EnumMemberInfo> Members { get; } = Members;
+        public Accessibility Accessibility { get; } = Accessibility;
 
         public string Prefix => _prefix ?? "Has";
     }

@@ -1,4 +1,6 @@
-using System;
+// HasFlagExtension Generator
+// Copyright (c) 2025 KryKom
+
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;

@@ -1,3 +1,6 @@
+// HasFlagExtension Generator
+// Copyright (c) 2025 KryKom
+
 using System;
 
 namespace HasFlagExtension;
@@ -8,7 +11,7 @@ namespace HasFlagExtension;
 [AttributeUsage(AttributeTargets.Enum)]
 public class HasFlagPrefixAttribute : Attribute {
     
-    internal string Prefix { get; }
+    public string Prefix { get; }
 
     public HasFlagPrefixAttribute(string prefix) {
         Prefix = prefix;
