@@ -6,8 +6,8 @@ namespace HasFlagExtension.Sample;
 public static class Examples {
     
     public static void Main() {
-        var f = FlagEnum.ELEMENT_A | FlagEnum.B;
-        var p = InternalEnum.A | InternalEnum.B;
+        // var f = FlagEnum.ELEMENT_A | FlagEnum.B;
+        // var p = InternalEnum.A | InternalEnum.B;
 
         // var a = f.GetAllowElementA();
 
