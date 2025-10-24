@@ -33,26 +33,22 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0">
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0">
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0" />
     </ItemGroup>
     
     <ItemGroup>
-        <ProjectReference Include="../HasFlagExtension.Attributes/HasFlagExtension.Attributes.csproj" GeneratePathProperty="true">
+        <ProjectReference Include="../HasFlagExtension.Attributes/HasFlagExtension.Attributes.csproj">
             <PrivateAssets>all</PrivateAssets>
         </ProjectReference>
     </ItemGroup>
 
-    <ItemGroup>
-        <None Include="$(PkgHasFlagExtension_Attributes)/lib/netstandard2.0/*.dll" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
-    </ItemGroup>
+    <!-- Pack the generator assembly -->
+<!--    <ItemGroup>-->
+<!--        <None Include="$(OutputPath)/$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />-->
+<!--    </ItemGroup>-->
     
     <ItemGroup>
         <None Include="$(OutputPath)/**/*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     </ItemGroup>
-    
 </Project>
