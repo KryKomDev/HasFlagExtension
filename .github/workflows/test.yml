@@ -34,8 +34,14 @@ jobs:
       with:
         dotnet-version: 10.0.x
 
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.TestProjectPath }}
+
+    - name: Build projects
+      run: dotnet build ${{ env.TestProjectPath }} --no-restore
+
     - name: Execute unit tests
-      run: dotnet test ${{ env.TestProjectPath }}
+      run: dotnet test ${{ env.TestProjectPath }} --no-build
 
     - name: Restore the application
       run: dotnet restore ${{ env.TestProjectPath }}
