@@ -38,4 +38,4 @@ jobs:
       run: dotnet test ${{ env.TestProjectPath }}
 
     - name: Restore the application
-      run: dotnet restore
+      run: dotnet restore ${{ env.TestProjectPath }}
