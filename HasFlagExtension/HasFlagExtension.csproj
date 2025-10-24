@@ -54,12 +54,5 @@
     <ItemGroup>
         <None Include="$(OutputPath)/**/*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     </ItemGroup>
-
-    <Target Name="RemoveDependency" BeforeTargets="GenerateNuspec">
-        <ItemGroup>
-            <_FrameworkAssemblyReferences Remove="@(_FrameworkAssemblyReferences)" />
-            <_PackageReference Remove="HasFlagExtension.Attributes" />
-        </ItemGroup>
-    </Target>
     
 </Project>
