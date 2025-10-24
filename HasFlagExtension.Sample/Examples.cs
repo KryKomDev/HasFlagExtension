@@ -9,7 +9,7 @@ public static class Examples {
         var f = FlagEnum.ELEMENT_A | FlagEnum.B;
         var p = InternalEnum.A | InternalEnum.B;
 
-        var a = f.GetAllowElementA();
+        // var a = f.GetAllowElementA();
 
         // var isA = p.HasA;
         //
