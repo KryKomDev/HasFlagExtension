@@ -8,6 +8,7 @@ on:
     paths:
       - 'HasFlagExtension/**'
       - 'HasFlagExtension.Tests/**'
+      - '.github/workflows/build.yml'
   workflow_dispatch:
 
 jobs:
@@ -19,8 +20,8 @@ jobs:
     runs-on: ubuntu-latest 
 
     env:
-      Solution_Name: HasFlagExtension.sln
-      Test_Project_Path: HasFlagExtension.Tests\HasFlagExtension.Tests.csproj
+      SolutionName: HasFlagExtension.sln
+      TestProjectPath: HasFlagExtension.Tests\HasFlagExtension.Tests.csproj
 
     steps:
     - name: Checkout
@@ -33,11 +34,8 @@ jobs:
       with:
         dotnet-version: 10.0.x
 
-    - name: Build Projects
-      run: dotnet build
-
     - name: Execute unit tests
-      run: dotnet test --no-restore
+      run: dotnet test ${{ TestProjectPath }} --no-restore
 
     - name: Restore the application
       run: dotnet restore
