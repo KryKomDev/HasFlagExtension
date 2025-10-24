@@ -1,14 +1,14 @@
 # HasFlagExtension
 # by KryKom with love and care :)
 
-name: Build HasFlagExtension
+name: Test HasFlagExtension
 
 on:
   push:
     paths:
       - 'HasFlagExtension/**'
       - 'HasFlagExtension.Tests/**'
-      - '.github/workflows/build.yml'
+      - '.github/workflows/test.yml'
   workflow_dispatch:
 
 jobs:
@@ -20,8 +20,8 @@ jobs:
     runs-on: ubuntu-latest 
 
     env:
-      SolutionName: HasFlagExtension.sln
-      TestProjectPath: HasFlagExtension.Tests\HasFlagExtension.Tests.csproj
+      SolutionName: ./HasFlagExtension.sln
+      TestProjectPath: ./HasFlagExtension.Tests/HasFlagExtension.Tests.csproj
 
     steps:
     - name: Checkout
