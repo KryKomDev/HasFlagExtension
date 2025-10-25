@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -138,10 +139,11 @@ public class HasFlagGenerator : IIncrementalGenerator {
     }
 
     private static string GenerateExtensionsSource(FlagEnumInfo info) {
-        var ns = info.Namespace;
-        var enumName = info.SymbolName;
-        var extTypeName = enumName + "Extensions";
-        var am = info.Accessibility == Accessibility.Public ? "public" : "internal";
+        var ns           = info.Namespace;
+        var enumName     = info.SymbolName;
+        var fullEnumName = info.FullEnumName;
+        var extTypeName  = enumName + "Extensions";
+        var am           = info.Accessibility == Accessibility.Public ? "public" : "internal";
 
         var sb = new StringBuilder();
         sb.AppendLine($"""
@@ -149,10 +151,16 @@ public class HasFlagGenerator : IIncrementalGenerator {
                        
                        using System; 
                        using System.Diagnostics.Contracts;
-                       
+                       using {ns};
                        """);
+
+        // // Add static import for nested enum's containing class
+        // if (!string.IsNullOrEmpty(info.ContainingClassFullName)) {
+        //     sb.AppendLine($"using static {info.ContainingClassFullName};");
+        // }
         
         if (!string.IsNullOrEmpty(ns)) {
+            sb.AppendLine();
             sb.AppendLine($"namespace {ns} {{");
             sb.AppendLine();
         }
@@ -171,7 +179,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
                                    /// Returns true if any of the bits for {m.Name} are set in the value.
                                    /// </summary>
                                    [Pure]
-                                   {am} static bool Get{methodName}(this {enumName} value) => value.HasFlag({enumName}.{m.Name});
+                                   {am} static bool Get{methodName}(this {fullEnumName} value) => value.HasFlag({fullEnumName}.{m.Name});
                            """);
         }
 
@@ -180,7 +188,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
                         
                         #if NET10_0_OR_GREATER
                         
-                                extension({{enumName}} value) {
+                                extension({{fullEnumName}} value) {
                         """);
 
         foreach (var m in info.Members) {
@@ -191,7 +199,7 @@ public class HasFlagGenerator : IIncrementalGenerator {
                                        /// <summary>
                                        /// Returns true if any of the bits for {m.Name} are set in the value.
                                        /// </summary>
-                                       {am} bool {propertyName} => value.HasFlag({enumName}.{m.Name});
+                                       {am} bool {propertyName} => value.HasFlag({fullEnumName}.{m.Name});
                            """);
         }
 
@@ -251,7 +259,40 @@ public class HasFlagGenerator : IIncrementalGenerator {
         public string Namespace => Symbol.ContainingNamespace?.IsGlobalNamespace == false
             ? Symbol.ContainingNamespace.ToDisplayString()
             : string.Empty;
+        
         public string SymbolName => Symbol.Name;
+        
+        public string FullEnumName {
+            get {
+                var parts   = new List<string>();
+                var current = Symbol;
+                
+                while (current != null) {
+                    parts.Insert(0, current.Name);
+                    current = current.ContainingType;
+                }
+                
+                return string.Join(".", parts);
+            }
+        }
+        
+        // public string? ContainingClassFullName {
+        //     get {
+        //         if (Equals(Symbol.ContainingType, null)) return null;
+        //         
+        //         var parts   = new List<string>();
+        //         var current = Symbol.ContainingType;
+        //         
+        //         while (current != null) {
+        //             parts.Insert(0, current.Name);
+        //             current = current.ContainingType;
+        //         }
+        //         
+        //         var namespacePart = !string.IsNullOrEmpty(Namespace) ? Namespace + "." : "";
+        //         return namespacePart + string.Join(".", parts);
+        //     }
+        // }
+        
         public INamedTypeSymbol Symbol { get; } = Symbol;
         public ImmutableArray<EnumMemberInfo> Members { get; } = Members;
         public Accessibility Accessibility { get; } = Accessibility;

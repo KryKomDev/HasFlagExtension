@@ -18,12 +18,14 @@
         <PackageId>HasFlagExtension</PackageId>
         <Authors>KryKom</Authors>
         <Company>KryKom</Company>
-        <Version>1.1.0.1</Version>
+        <Version>1.1.0.3</Version>
         <PackageProjectUrl>https://github.com/KryKomDev/HasFlagExtension</PackageProjectUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Description>C# source generator for generating extension methods and properties for flag enums.</Description>
         <IncludeBuildOutput>false</IncludeBuildOutput>
+        
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         
         <NoWarn>$(NoWarn);NU5128</NoWarn>
     </PropertyGroup>
@@ -35,6 +37,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0"/>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0" />
+        <PackageReference Include="System.Collections.Immutable" Version="9.0.10" />
     </ItemGroup>
     
     <ItemGroup>
@@ -50,5 +53,9 @@
     
     <ItemGroup>
         <None Include="$(OutputPath)/**/*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="../README.md" Pack="true" PackagePath=""/>
     </ItemGroup>
 </Project>
