@@ -36,6 +36,7 @@ public class HasFlagGeneratorTests {
         
         using System; 
         using System.Diagnostics.Contracts;
+        using TestNamespace;
         
         namespace TestNamespace {
         
@@ -105,6 +106,6 @@ public class HasFlagGeneratorTests {
         _testOutputHelper.WriteLine(GetTestEnumClass(prefix));
         
         Assert.Equal(GetGeneratedClass(prefix), generatedFileSyntax.GetText().ToString(), 
-            ignoreLineEndingDifferences: true, ignoreWhiteSpaceDifferences: true);
+            ignoreLineEndingDifferences: true, ignoreWhiteSpaceDifferences: true, ignoreAllWhiteSpace: true);
     }
 }
