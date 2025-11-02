@@ -2,6 +2,7 @@
 // Copyright (c) 2025 KryKom
 
 using System.Linq;
+using HasFlagExtension.Generator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Xunit;
@@ -10,11 +11,11 @@ using Xunit.Abstractions;
 namespace HasFlagExtension.Tests;
 
 public class HasFlagGeneratorTests {
+    
     private readonly ITestOutputHelper _testOutputHelper;
     public HasFlagGeneratorTests(ITestOutputHelper testOutputHelper) {
         _testOutputHelper = testOutputHelper;
     }
-    
 
     private string GetTestEnumClass(string prefix) => $$"""
         using System;
@@ -23,7 +24,7 @@ public class HasFlagGeneratorTests {
         namespace TestNamespace;
 
         [Flags]
-        [HasFlagPrefix("{{prefix}}")]
+        [{{nameof(HasFlagPrefixAttribute)}}("{{prefix}}")]
         public enum TestEnum {
             A,
             B,
@@ -88,9 +89,9 @@ public class HasFlagGeneratorTests {
 
     [Theory]
     [InlineData("Has")] // TODO: figure out why the frikin generator doesn't work with nothing else but 'Has' in tests
-    // [InlineData("Allow")]
+    [InlineData("Allow")]
     public void GenerateHasFlagMethods(string prefix) {
-        var generator = new HasFlagGenerator();
+        var generator = new HasFlagExtensionGenerator();
         
         var driver = CSharpGeneratorDriver.Create(generator);
 

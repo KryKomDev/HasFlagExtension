@@ -14,5 +14,8 @@ public enum FlagEnum {
     B,
     C,
     D,
-    E
+    E,
+    
+    [ExcludeFlag]
+    EXCLUDED
 }

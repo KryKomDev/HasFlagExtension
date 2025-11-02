@@ -7,23 +7,37 @@
         <OutputType>exe</OutputType>
         
         <LocalPackagingTest>false</LocalPackagingTest>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     </PropertyGroup>
 
+<!--    <ItemGroup Condition="'$(LocalPackagingTest)' == 'true'">-->
+<!--        <PackageReference Include="HasFlagExtension" Version="1.1.1" OutputItemType="Analyzer" ReferenceOutputAssembly="false">-->
+<!--            <PrivateAssets>all</PrivateAssets>-->
+<!--            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
+<!--        </PackageReference>-->
+<!--    </ItemGroup>-->
+<!--    -->
+<!--    <ItemGroup Condition="'$(LocalPackagingTest)' == 'false'">-->
+<!--        <ProjectReference Include="../HasFlagExtension/HasFlagExtension.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">-->
+<!--            <PrivateAssets>all</PrivateAssets>-->
+<!--            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
+<!--        </ProjectReference>-->
+<!--    </ItemGroup>-->
+
+
     <ItemGroup Condition="'$(LocalPackagingTest)' == 'true'">
-        <PackageReference Include="HasFlagExtension" Version="1.1.0.3" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
-            <PrivateAssets>all</PrivateAssets>
+        <PackageReference Include="HasFlagExtension.Generator" Version="1.0.0" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
-    
+
     <ItemGroup Condition="'$(LocalPackagingTest)' == 'false'">
-        <ProjectReference Include="../HasFlagExtension/HasFlagExtension.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
-            <PrivateAssets>all</PrivateAssets>
+        <ProjectReference Include="../HasFlagExtension.Generator/HasFlagExtension.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </ProjectReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\HasFlagExtension.Attributes\HasFlagExtension.Attributes.csproj" />
+<!--        <ProjectReference Include="..\HasFlagExtension.Attributes\HasFlagExtension.Attributes.csproj" />-->
     </ItemGroup>
 </Project>

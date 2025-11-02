@@ -6,7 +6,7 @@ name: Test HasFlagExtension
 on:
   push:
     paths:
-      - 'HasFlagExtension/**'
+      - 'HasFlagExtension.Generator/**'
       - 'HasFlagExtension.Tests/**'
       - '.github/workflows/test.yml'
   workflow_dispatch:
