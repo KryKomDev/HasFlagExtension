@@ -7,7 +7,6 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static HasFlagExtension.Generator.HasFlagExtensionAnalyzer;
 
 namespace HasFlagExtension.Generator;
 
@@ -27,7 +26,7 @@ public partial class HasFlagExtensionGenerator {
         if (source is NamingCase.KEBAB or NamingCase.SPACED_CAMEL or NamingCase.TRAIN or NamingCase.UNKNOWN) {
             diag.Add(Diagnostic.Create(
                 InvalidSourceCase, 
-                namingAttr.AttributeConstructor!.Locations.First(), 
+                GetAttributeLocation(namingAttr), 
                 source
             ));
         }
@@ -35,10 +34,10 @@ public partial class HasFlagExtensionGenerator {
         // extract target naming
         var target = GetNamingCase(namingAttr.ConstructorArguments[1].Value?.ToString());
         
-        if (source is NamingCase.KEBAB or NamingCase.SPACED_CAMEL or NamingCase.TRAIN or NamingCase.UNKNOWN) {
+        if (target is NamingCase.KEBAB or NamingCase.SPACED_CAMEL or NamingCase.TRAIN or NamingCase.UNKNOWN) {
             diag.Add(Diagnostic.Create(
                 InvalidTargetCase, 
-                namingAttr.AttributeConstructor!.Locations.First(), 
+                GetAttributeLocation(namingAttr), 
                 target
             ));
         }
@@ -107,7 +106,10 @@ public partial class HasFlagExtensionGenerator {
     
         // not enough arguments
         if (attr.ConstructorArguments.Length < 1) {
-            diag.Add(Diagnostic.Create(PrefixNotSpecified, attr.AttributeConstructor!.Locations.First()));
+            diag.Add(Diagnostic.Create(
+                PrefixNotSpecified, 
+                GetAttributeLocation(attr)
+            ));
             return null;
         }
         
@@ -115,7 +117,7 @@ public partial class HasFlagExtensionGenerator {
         if (attr.ConstructorArguments[0].Value is not string prefix) {
             diag.Add(Diagnostic.Create(
                 InvalidPrefixType, 
-                attr.AttributeConstructor!.Locations.First(), 
+                GetAttributeLocation(attr), 
                 attr.ConstructorArguments[0].Value?.GetType().Name
             ));
             return null;
@@ -125,7 +127,7 @@ public partial class HasFlagExtensionGenerator {
         if (!SyntaxFacts.IsValidIdentifier(prefix)) {
             diag.Add(Diagnostic.Create(
                 InvalidPrefix,
-                attr.AttributeConstructor!.Locations.First(), 
+                GetAttributeLocation(attr), 
                 prefix
             ));
             return null;
@@ -151,7 +153,7 @@ public partial class HasFlagExtensionGenerator {
         if (attr.ConstructorArguments[0].Value is not bool exclude) {
             diag.Add(Diagnostic.Create(
                 InvalidExcludeEnumType, 
-                attr.AttributeConstructor!.Locations.First(), 
+                GetAttributeLocation(attr), 
                 attr.ConstructorArguments[0].Value?.GetType().Name
             ));
             return true;
@@ -172,7 +174,7 @@ public partial class HasFlagExtensionGenerator {
         if (attr.ConstructorArguments.Length < 2) {
             diag.Add(Diagnostic.Create(
                 InvalidNamingArguments, 
-                attr.AttributeConstructor!.Locations.First()
+                GetAttributeLocation(attr)
             ));
             return null;
         }
@@ -183,7 +185,7 @@ public partial class HasFlagExtensionGenerator {
         if (source is NamingCase.KEBAB or NamingCase.SPACED_CAMEL or NamingCase.TRAIN or NamingCase.UNKNOWN) {
             diag.Add(Diagnostic.Create(
                 InvalidSourceCase,
-                attr.AttributeConstructor!.Locations.First(), 
+                GetAttributeLocation(attr),
                 source
             ));
             return null;
@@ -195,7 +197,7 @@ public partial class HasFlagExtensionGenerator {
         if (target is NamingCase.KEBAB or NamingCase.SPACED_CAMEL or NamingCase.TRAIN or NamingCase.UNKNOWN) {
             diag.Add(Diagnostic.Create(
                 InvalidTargetCase,
-                attr.AttributeConstructor!.Locations.First(), 
+                GetAttributeLocation(attr), 
                 target
             ));
             return null;
@@ -242,7 +244,7 @@ public partial class HasFlagExtensionGenerator {
         if (attr.ConstructorArguments[0].Value is not bool exclude) {
             diag.Add(Diagnostic.Create(
                 InvalidExcludeFlagType, 
-                attr.AttributeConstructor!.Locations.First(), 
+                GetAttributeLocation(attr), 
                 attr.ConstructorArguments[0].Value?.GetType().Name
             ));
             return true;
@@ -263,7 +265,7 @@ public partial class HasFlagExtensionGenerator {
     
         // not enough arguments
         if (attr.ConstructorArguments.Length < 1) {
-            diag.Add(Diagnostic.Create(FlagNameNotSpecified, attr.AttributeConstructor!.Locations.First()));
+            diag.Add(Diagnostic.Create(FlagNameNotSpecified, symbol.Locations.First()));
             return null;
         }
         
@@ -271,7 +273,7 @@ public partial class HasFlagExtensionGenerator {
         if (attr.ConstructorArguments[0].Value is not string prefix) {
             diag.Add(Diagnostic.Create(
                 InvalidFlagNameType, 
-                attr.AttributeConstructor!.Locations.First(), 
+                GetAttributeLocation(attr), 
                 attr.ConstructorArguments[0].Value?.GetType().Name
             ));
             return null;
@@ -281,7 +283,7 @@ public partial class HasFlagExtensionGenerator {
         if (!SyntaxFacts.IsValidIdentifier(prefix)) {
             diag.Add(Diagnostic.Create(
                 InvalidFlagName,
-                attr.AttributeConstructor!.Locations.First(), 
+                GetAttributeLocation(attr), 
                 prefix
             ));
             return null;
@@ -289,4 +291,7 @@ public partial class HasFlagExtensionGenerator {
         
         return prefix;
     }
+
+    private static Location GetAttributeLocation(AttributeData attr) => 
+        attr.ApplicationSyntaxReference?.GetSyntax().GetLocation() ?? Location.None;
 }

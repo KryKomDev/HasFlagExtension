@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Microsoft.CodeAnalysis.Diagnostics.GeneratedCodeAnalysisFlags;
 
 namespace HasFlagExtension.Generator;
 
@@ -56,7 +55,7 @@ internal class HasFlagExtensionAnalyzer : DiagnosticAnalyzer {
         title: "Naming Case not specified",
         messageFormat: "Naming case is not specified for assembly", 
         category: "HasFlagExtension",
-        DiagnosticSeverity.Info,
+        DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         description: "Naming Case is not specified for assembly, using default (Pascal Case)."
     );

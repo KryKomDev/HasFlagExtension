@@ -33,8 +33,8 @@ jobs:
     - name: Build
       run: dotnet build ${{ env.ProjectPath }} --configuration Release --no-restore
   
-#    - name: Test
-#      run: dotnet test ${{ env.TestProjectPath }}
+    - name: Test
+      run: dotnet test ${{ env.TestProjectPath }}
 
     - name: Pack
       run: dotnet pack ${{ env.ProjectPath }} --configuration Release --no-build --output ${{ env.NugetOutputDir }}
