@@ -3,7 +3,7 @@
 
 namespace HasFlagExtension;
 
-public enum NamingCase : byte {
+internal enum NamingCase : byte {
         
     /// <summary>
     /// Represents a naming convention where words are concatenated without spaces,

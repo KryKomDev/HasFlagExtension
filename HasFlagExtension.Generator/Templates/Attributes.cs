@@ -8,7 +8,7 @@ using System;
 namespace HasFlagExtension;
 
 [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Enum)]
-public class EnumNamingAttribute : Attribute {
+internal class EnumNamingAttribute : Attribute {
     public NamingCase EnumNamingCase { get; }
     public NamingCase MethodNamingCase { get; }
     
@@ -19,7 +19,7 @@ public class EnumNamingAttribute : Attribute {
 }
 
 [AttributeUsage(AttributeTargets.Enum)]
-public class ExcludeFlagEnumAttribute : Attribute {
+internal class ExcludeFlagEnumAttribute : Attribute {
     public bool Exclude { get; }
     
     public ExcludeFlagEnumAttribute(bool exclude = true) {
@@ -28,7 +28,7 @@ public class ExcludeFlagEnumAttribute : Attribute {
 }
 
 [AttributeUsage(AttributeTargets.Field)]
-public class ExcludeFlagAttribute : Attribute {
+internal class ExcludeFlagAttribute : Attribute {
     public bool Exclude { get; }
     
     public ExcludeFlagAttribute(bool exclude = true) {
@@ -37,7 +37,7 @@ public class ExcludeFlagAttribute : Attribute {
 }
 
 [AttributeUsage(AttributeTargets.Enum)]
-public class HasFlagPrefixAttribute : Attribute {
+internal class HasFlagPrefixAttribute : Attribute {
     public string Prefix { get; }
     
     public HasFlagPrefixAttribute(string prefix) {
@@ -46,7 +46,7 @@ public class HasFlagPrefixAttribute : Attribute {
 }
 
 [AttributeUsage(AttributeTargets.Field)]
-public class FlagDisplayNameAttribute : Attribute {
+internal class FlagDisplayNameAttribute : Attribute {
     public string DisplayName { get; }
     
     public FlagDisplayNameAttribute(string displayName) {

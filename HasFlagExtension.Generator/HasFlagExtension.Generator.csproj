@@ -13,7 +13,7 @@
 
         <Authors>KryKom</Authors>
         <Company>KryKom</Company>
-        <Version>2.0.1</Version>
+        <Version>2.0.1.1</Version>
         <PackageProjectUrl>https://github.com/KryKomDev/HasFlagExtension</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Description>C# source generator for generating extension methods and properties for flag enums.</Description>
