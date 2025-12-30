@@ -36,7 +36,7 @@ internal class ExcludeFlagAttribute : Attribute {
     }
 }
 
-[AttributeUsage(AttributeTargets.Enum)]
+[AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field)]
 internal class HasFlagPrefixAttribute : Attribute {
     public string Prefix { get; }
     

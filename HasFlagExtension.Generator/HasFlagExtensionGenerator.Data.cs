@@ -1,6 +1,7 @@
 // HasFlagExtension Generator
 // Copyright (c) 2025 KryKom
 
+using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 
@@ -56,15 +57,21 @@ public partial class HasFlagExtensionGenerator {
         public string Name { get; }
 
         private readonly string? _displayName;
+        private readonly string? _customPrefix;
+        
         public string DisplayName => _displayName ?? Name;
         public bool HasCustomName => _displayName != null;
+        
+        public string CustomPrefix => _customPrefix ?? throw new NullReferenceException();
+        public bool HasCustomPrefix => _customPrefix != null;
 
         public bool Exclude { get; }
 
-        public FlagInfo(string name, string? displayName, bool exclude = false) {
+        public FlagInfo(string name, string? displayName, bool exclude = false, string? customPrefix = null) {
             Name         = name;
             _displayName = displayName;
             Exclude      = exclude;
+            _customPrefix = customPrefix;
         }
     }
 

@@ -11,6 +11,8 @@ public enum FlagEnum {
     
     [FlagDisplayName("ElementA")]
     ELEMENT_A,
+    
+    [HasFlagPrefix("Can")]
     B,
     C,
     D,

@@ -223,8 +223,9 @@ public partial class HasFlagExtensionGenerator {
         var name        = symbol.Name;
         var displayName = GetDisplayName(symbol, diag);
         var exclude     = GetExcludeFlag(symbol, diag);
+        var prefix      = GetFlagPrefix (symbol, diag);
         
-        return new FlagInfo(name, displayName, exclude);
+        return new FlagInfo(name, displayName, exclude, prefix);
     }
 
     private static bool GetExcludeFlag(IFieldSymbol symbol, ImmutableArray<Diagnostic>.Builder diag) {
@@ -283,6 +284,45 @@ public partial class HasFlagExtensionGenerator {
         if (!SyntaxFacts.IsValidIdentifier(prefix)) {
             diag.Add(Diagnostic.Create(
                 InvalidFlagName,
+                GetAttributeLocation(attr), 
+                prefix
+            ));
+            return null;
+        }
+        
+        return prefix;
+    }
+    
+    private static string? GetFlagPrefix(IFieldSymbol symbol, ImmutableArray<Diagnostic>.Builder diag) {
+        var attr = symbol
+            .GetAttributes()
+            .FirstOrDefault(
+                a => a.AttributeClass?.ToDisplayString() == $"{HFNS}.{nameof(HasFlagPrefixAttribute)}"
+            );
+        
+        if (attr is null) 
+            return null;
+    
+        // not enough arguments
+        if (attr.ConstructorArguments.Length < 1) {
+            diag.Add(Diagnostic.Create(PrefixNotSpecified, symbol.Locations.First()));
+            return null;
+        }
+        
+        // invalid type
+        if (attr.ConstructorArguments[0].Value is not string prefix) {
+            diag.Add(Diagnostic.Create(
+                InvalidPrefixType, 
+                GetAttributeLocation(attr), 
+                attr.ConstructorArguments[0].Value?.GetType().Name
+            ));
+            return null;
+        }
+
+        // invalid identifier
+        if (!SyntaxFacts.IsValidIdentifier(prefix)) {
+            diag.Add(Diagnostic.Create(
+                InvalidPrefix,
                 GetAttributeLocation(attr), 
                 prefix
             ));

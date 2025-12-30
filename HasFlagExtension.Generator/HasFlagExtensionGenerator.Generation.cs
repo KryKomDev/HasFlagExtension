@@ -100,9 +100,13 @@ public partial class HasFlagExtensionGenerator :  IIncrementalGenerator {
         foreach (var m in info.Members) {
             if (m.Exclude) continue;
             
-            var name = prefix + (m.HasCustomName 
-                ? m.DisplayName 
-                : NameConvertor.Convert(m.Name, (info.Naming ?? naming)));
+            var name =  
+                (m.HasCustomPrefix 
+                    ? m.CustomPrefix 
+                    : prefix) + 
+                (m.HasCustomName 
+                    ? m.DisplayName 
+                    : NameConvertor.Convert(m.Name, info.Naming ?? naming));
 
             sb.AppendLine(
                 $"""
@@ -127,9 +131,13 @@ public partial class HasFlagExtensionGenerator :  IIncrementalGenerator {
         foreach (var m in info.Members) {
             if (m.Exclude) continue;
             
-            var name = prefix + (m.HasCustomName 
-                ? m.DisplayName 
-                : NameConvertor.Convert(m.Name, (info.Naming ?? naming)));
+            var name = 
+                (m.HasCustomPrefix 
+                    ? m.CustomPrefix 
+                    : prefix) + 
+                (m.HasCustomName 
+                    ? m.DisplayName 
+                    : NameConvertor.Convert(m.Name, info.Naming ?? naming));
 
             sb.AppendLine(
                 $"""
