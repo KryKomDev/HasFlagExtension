@@ -21,6 +21,9 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Test Generator
+        run: dotnet test ./HasFlagExtension.Tests/HasFlagExtension.Tests.csproj
+
       - name: Build Generator
         run: dotnet build ./HasFlagExtension.Generator/HasFlagExtension.Generator.csproj --configuration Release
 
