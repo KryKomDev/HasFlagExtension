@@ -17,3 +17,16 @@
  HFE031  | HasFlagExtension | Error    | Flag name not specified                        
  HFE032  | HasFlagExtension | Error    | Invalid Flag Name Type                         
  HFE1000 | HasFlagExtension | Error    | Invalid Enum Syntax                            
+
+# Release 2.1.0
+
+### New Rules
+
+ Rule ID | Category         | Severity | Notes                     
+---------|------------------|----------|---------------------------
+ HFE0040 | HasFlagExtension | Error    | Invalid Group Name        
+ HFE0041 | HasFlagExtension | Error    | Invalid Group Name Type   
+ HFE0042 | HasFlagExtension | Error    | Invalid Group Prefix      
+ HFE0043 | HasFlagExtension | Error    | Invalid Group Prefix Type 
+ HFE0044 | HasFlagExtension | Warning  | Unknown Group Name        
+ HFE0045 | HasFlagExtension | Error    | Invalid Group Addition    

@@ -1,11 +1,8 @@
 // HasFlagExtension Generator
-// Copyright (c) 2025 KryKom
+// Copyright (c) 2025 - 2026 KryKom
 
 using System.IO;
 using System.Reflection;
-using System.Text;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 
 namespace HasFlagExtension.Generator;
 

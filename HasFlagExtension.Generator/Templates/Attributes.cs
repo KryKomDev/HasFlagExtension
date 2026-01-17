@@ -1,7 +1,8 @@
 // HasFlagExtension Generator
-// Copyright (c) 2025 KryKom
- 
+// Copyright (c) 2025 - 2026 KryKom
+
 // ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable once RedundantUsingDirective
 
 using System;
 
@@ -51,5 +52,21 @@ internal class FlagDisplayNameAttribute : Attribute {
     
     public FlagDisplayNameAttribute(string displayName) {
         DisplayName = displayName;
+    }
+}
+
+[AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field, AllowMultiple = true)]
+internal class FlagGroupAttribute : Attribute {
+    public string Group { get; }
+    public string Prefix { get; }
+    
+    public FlagGroupAttribute(string group) {
+        Group = group;
+        Prefix = string.Empty;
+    }
+    
+    public FlagGroupAttribute(string group, string prefix) {
+        Group = group;
+        Prefix = prefix;
     }
 }

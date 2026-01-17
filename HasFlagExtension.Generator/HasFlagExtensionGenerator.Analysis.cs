@@ -1,63 +1,9 @@
 // HasFlagExtension Generator
-// Copyright (c) 2025 KryKom
-
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+// Copyright (c) 2025 - 2026 KryKom
 
 namespace HasFlagExtension.Generator;
 
 public partial class HasFlagExtensionGenerator {
-
-    private static EnumNamingAnalysisResult AnalyzeNaming(AttributeData? namingAttr) {
-        var diag = ImmutableArray.CreateBuilder<Diagnostic>();
-
-        if (namingAttr is null || namingAttr.ConstructorArguments.Length < 2) {
-            diag.Add(Diagnostic.Create(NamingNotSpecified, Location.None));
-            return new EnumNamingAnalysisResult(new EnumNamingInfo(NamingCase.PASCAL, NamingCase.PASCAL), diag.ToImmutable());
-        }
-
-        // extract source naming
-        var source = GetNamingCase(namingAttr.ConstructorArguments[0].Value?.ToString());
-        
-        if (source is NamingCase.KEBAB or NamingCase.SPACED_CAMEL or NamingCase.TRAIN or NamingCase.UNKNOWN) {
-            diag.Add(Diagnostic.Create(
-                InvalidSourceCase, 
-                GetAttributeLocation(namingAttr), 
-                source
-            ));
-        }
-
-        // extract target naming
-        var target = GetNamingCase(namingAttr.ConstructorArguments[1].Value?.ToString());
-        
-        if (target is NamingCase.KEBAB or NamingCase.SPACED_CAMEL or NamingCase.TRAIN or NamingCase.UNKNOWN) {
-            diag.Add(Diagnostic.Create(
-                InvalidTargetCase, 
-                GetAttributeLocation(namingAttr), 
-                target
-            ));
-        }
-
-        // Return the extracted data as a tuple or custom struct
-        return new EnumNamingAnalysisResult(new EnumNamingInfo(source, target), diag.ToImmutable());
-    }
-
-    private static NamingCase GetNamingCase(string? name) {
-        return name switch {
-            "0" => NamingCase.CAMEL,
-            "1" => NamingCase.PASCAL,
-            "2" => NamingCase.SNAKE,
-            "3" => NamingCase.SCREAMING_SNAKE,
-            "4" => NamingCase.KEBAB,
-            "5" => NamingCase.SPACED_CAMEL,
-            "6" => NamingCase.TRAIN,
-            _   => NamingCase.UNKNOWN
-        };
-    }
     
     private static EnumGenResult AnalyzeEnum(
         EnumDeclarationSyntax enumDecl,

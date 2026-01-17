@@ -1,6 +1,5 @@
-using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
+// HasFlagExtension Generator
+// Copyright (c) 2025 - 2026 KryKom
 
 namespace HasFlagExtension.Generator;
 
@@ -25,6 +24,12 @@ internal class HasFlagExtensionAnalyzer : DiagnosticAnalyzer {
         InvalidFlagName,
         FlagNameNotSpecified,
         InvalidFlagNameType,
+        InvalidGroupName,
+        InvalidGroupNameType,
+        InvalidGroupPrefix,
+        InvalidGroupPrefixType,
+        UnknownGroupName,
+        InvalidGroupAddition,
         InvalidEnumSyntax
     ];
     
@@ -154,6 +159,68 @@ internal class HasFlagExtensionAnalyzer : DiagnosticAnalyzer {
         DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         description: "HasFlag method name is not of valid type. Expected string, got {0}."
+    );
+    
+    // group extensions
+
+    internal static readonly DiagnosticDescriptor InvalidGroupName = new(
+        id: "HFE0040",
+        title: "Invalid Group Name",
+        messageFormat: "Cannot generate Group extension, invalid group name '{0}'",   
+        category: "HasFlagExtension",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true,
+        description: "Cannot generate Group extension, invalid group name '{0}' (must be a valid identifier)."
+    );
+    
+    internal static readonly DiagnosticDescriptor InvalidGroupNameType = new(
+        id: "HFE0041",
+        title: "Invalid Group Name Type",
+        messageFormat: "Cannot generate Group extension, invalid group name type '{0}'",   
+        category: "HasFlagExtension",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true,
+        description: "Cannot generate Group extension, invalid group name type '{0}' (must be string)."
+    );
+
+    internal static readonly DiagnosticDescriptor InvalidGroupPrefix = new(
+        id: "HFE0042",
+        title: "Invalid Group Prefix",
+        messageFormat: "Cannot generate Group extension, invalid group prefix '{0}'",   
+        category: "HasFlagExtension",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true,
+        description: "Cannot generate Group extension, invalid group prefix '{0}' (must be a valid identifier)."
+    );
+
+    internal static readonly DiagnosticDescriptor InvalidGroupPrefixType = new(
+        id: "HFE0043",
+        title: "Invalid Group Prefix Type",
+        messageFormat: "Cannot generate Group extension, invalid group prefix type '{0}'",   
+        category: "HasFlagExtension",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true,
+        description: "Cannot generate Group extension, invalid group prefix type '{0}' (must be string)."
+    );
+
+    internal static readonly DiagnosticDescriptor UnknownGroupName = new(
+        id: "HFE0044",
+        title: "Unknown Group Name",
+        messageFormat: "Cannot add flag to group, unknown group name '{0}'",   
+        category: "HasFlagExtension",
+        DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: "Cannot add flag to group, unknown group name '{0}' (must be defined before use)."
+    );
+    
+    internal static readonly DiagnosticDescriptor InvalidGroupAddition = new(
+        id: "HFE0045",
+        title: "Invalid Group Addition",
+        messageFormat: "This constructor cannot be used to add flags to groups",   
+        category: "HasFlagExtension",
+        DiagnosticSeverity.Error,
+        isEnabledByDefault: true,
+        description: "This constructor cannot be used to add flags to groups."
     );
     
     // internal shit

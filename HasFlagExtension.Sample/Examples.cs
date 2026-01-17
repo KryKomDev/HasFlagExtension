@@ -1,18 +1,15 @@
 // HasFlagExtension Generator
-// Copyright (c) 2025 KryKom
+// Copyright (c) 2025 - 2026 KryKom
 
-using System.Diagnostics.Contracts;
 using HasFlagExtension.Sample.Dir;
 using static HasFlagExtension.Sample.Dir.NestedClass;
 using static HasFlagExtension.Sample.Dir.NestedClass.DeeplyNestedClass;
 
 namespace HasFlagExtension.Sample;
 
-public static class Examples
-{
+public static class Examples {
 
-    public static void Main()
-    {
+    public static void Main() {
         var f = FlagEnum.ELEMENT_A | FlagEnum.B;
         var p = InternalEnum.A | InternalEnum.B;
         var i = InnerEnum.A | InnerEnum.C;
@@ -20,6 +17,7 @@ public static class Examples
         var dn = DeeplyNestedEnum.A | DeeplyNestedEnum.B;
         var ar = AutomaticallyRenamedEnum.THIS_ENUM | AutomaticallyRenamedEnum.WILL_BE;
         var df = DifferentlyNamedEnum.ThisEnum | DifferentlyNamedEnum.WillBe;
+        var ge = GroupedEnum.A;
         // var ex = ExcludedEnum.A | ExcludedEnum.B;
 
         var a = f.GetAllowElementA();
@@ -29,18 +27,16 @@ public static class Examples
         // var e = ar.GetHasThisEnum();
         var g = df.GetHasthis_enum();
         // var e = ex.GetHasE();
-
+        var ger = ge.GetIsInGroup1();
+        var get = ge.GetContainedInGroup2();
+        
         var isA = p.HasA;
 
         var allowsA = f.GetAllowElementA(); // returns true
         var allowsC = f.GetAllowC(); // returns false
 
-        if (f is { AllowElementA: true, CanB: true })
-        {
+        if (f is { AllowElementA: true, CanB: true }) {
 
         }
     }
-
-    [Pure]
-    public static int Two => 2;
 }

@@ -1,15 +1,13 @@
-// stolen from NeoKolors :)
+// HasFlagExtension Generator and NeoKolors
+// Copyright (c) 2025 - 2026 KryKom
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using HasFlagExtension.Generator;
+// stolen from NeoKolors :)
 
 namespace HasFlagExtension;
 
 internal static class NameConvertor {
     
-    internal static string Convert(string s, HasFlagExtensionGenerator.EnumNamingInfo naming) => 
+    internal static string Convert(string s, EnumNamingInfo naming) => 
         FromTokens(Tokenize(s, naming.Source), naming.Target);
     
     internal static string Convert(string s, NamingCase source, NamingCase target) => 

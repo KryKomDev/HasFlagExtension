@@ -1,9 +1,5 @@
 // HasFlagExtension Generator
-// Copyright (c) 2025 KryKom
-
-using System;
-using System.Collections.Immutable;
-using Microsoft.CodeAnalysis;
+// Copyright (c) 2025 - 2026 KryKom
 
 namespace HasFlagExtension.Generator;
 
@@ -72,26 +68,6 @@ public partial class HasFlagExtensionGenerator {
             _displayName = displayName;
             Exclude      = exclude;
             _customPrefix = customPrefix;
-        }
-    }
-
-    private struct EnumNamingAnalysisResult {
-        public EnumNamingInfo Naming { get; }
-        public ImmutableArray<Diagnostic> Diagnostics { get; }
-
-        public EnumNamingAnalysisResult(EnumNamingInfo naming, ImmutableArray<Diagnostic> diagnostics) {
-            Naming      = naming;
-            Diagnostics = diagnostics;
-        }
-    }
-    
-    internal struct EnumNamingInfo {
-        public NamingCase Source { get; }
-        public NamingCase Target { get; }
-
-        public EnumNamingInfo(NamingCase source, NamingCase target) {
-            Source = source;
-            Target = target;
         }
     }
 }
