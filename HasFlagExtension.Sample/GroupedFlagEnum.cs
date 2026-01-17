@@ -17,7 +17,7 @@ public enum GroupedFlagEnum {
     [FlagGroup("Group2")]
     C = 1 << 2, 
     
-    [FlagGroup("Group2")]
+    [FlagGroup("Group3")]
     D = 1 << 3, 
     
     [FlagGroup("Group3")]

@@ -1,5 +1,5 @@
 // HasFlagExtension Generator
-// Copyright (c) 2025 - 2026 KryKom
+// Copyright (c) 2026 KryKom
 
 using System.IO;
 using System.Reflection;

@@ -1,5 +1,5 @@
 // HasFlagExtension Generator and NeoKolors
-// Copyright (c) 2025 - 2026 KryKom
+// Copyright (c) 2026 KryKom
 
 // stolen from NeoKolors :)
 
