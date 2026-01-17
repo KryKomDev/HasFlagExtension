@@ -1,6 +1,7 @@
 // HasFlagExtension Generator
 // Copyright (c) 2025 - 2026 KryKom
 
+using System;
 using HasFlagExtension.Sample.Dir;
 using static HasFlagExtension.Sample.Dir.NestedClass;
 using static HasFlagExtension.Sample.Dir.NestedClass.DeeplyNestedClass;
@@ -18,6 +19,7 @@ public static class Examples {
         var ar = AutomaticallyRenamedEnum.THIS_ENUM | AutomaticallyRenamedEnum.WILL_BE;
         var df = DifferentlyNamedEnum.ThisEnum | DifferentlyNamedEnum.WillBe;
         var ge = GroupedEnum.A;
+        var gfe = GroupedFlagEnum.A | GroupedFlagEnum.B;
         // var ex = ExcludedEnum.A | ExcludedEnum.B;
 
         var a = f.GetAllowElementA();
@@ -29,6 +31,10 @@ public static class Examples {
         // var e = ex.GetHasE();
         var ger = ge.GetIsInGroup1();
         var get = ge.GetContainedInGroup2();
+        
+        Console.WriteLine(gfe.GetIsGroup1());
+        Console.WriteLine(gfe.GetIsGroup2());
+        Console.WriteLine(gfe.GetIsGroup3());
         
         var isA = p.HasA;
 

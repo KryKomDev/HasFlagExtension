@@ -34,6 +34,7 @@ public partial class IsGroupExtensionGenerator {
         var name     = symbol.Name;
         var fullName = symbol.ToDisplayString();
         var ns       = symbol.ContainingNamespace.ToDisplayString();
+        var isFlags  = symbol.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() == "System.FlagsAttribute");
         
         var groupDecls = GetGroupDecls(symbol, diagnostics);
         var flags      = GetFlagGroupAdditions(symbol, groupDecls.Select(g => g.GroupName).ToHashSet(), diagnostics);
@@ -54,7 +55,7 @@ public partial class IsGroupExtensionGenerator {
             groups[i] = new GroupData(gn, fs.ToArray(), decl.Prefix);
         }
         
-        return new EnumAnalysisData(groups, access, name, ns, fullName, GetNaming(symbol, diagnostics));
+        return new EnumAnalysisData(groups, access, name, ns, fullName, GetNaming(symbol, diagnostics), isFlags);
     }
     
     private static GroupDeclarationInfo[] GetGroupDecls(INamedTypeSymbol symbol, DiagBuilder diag) {

@@ -268,7 +268,6 @@ public class FeatureTests {
 
             namespace TestNamespace;
 
-            [Flags]
             [FlagGroup("Read")]
             [FlagGroup("Write")]
             public enum TestEnum {
@@ -319,13 +318,15 @@ public class FeatureTests {
                     /// </summary>
                     [Pure]
                     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                    public bool IsRead => val is TestNamespace.TestEnum.A or TestNamespace.TestEnum.B;
+                    public bool IsRead 
+                        => val is TestNamespace.TestEnum.A or TestNamespace.TestEnum.B;
                     /// <summary>
                     /// Returns true if the enum value is a member of the 'Write' group.
                     /// </summary>
                     [Pure]
                     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                    public bool IsWrite => val is TestNamespace.TestEnum.C;
+                    public bool IsWrite 
+                        => val is TestNamespace.TestEnum.C;
                 }
                 
             #endif

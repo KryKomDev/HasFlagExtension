@@ -128,7 +128,9 @@ public partial class IsGroupExtensionGenerator : IIncrementalGenerator {
                      [Pure]
                      [MethodImpl(MethodImplOptions.AggressiveInlining)]
                      {am} static bool {name}(this {fullEnumName} {VALUE_NAME}) 
-                         => {VALUE_NAME} is {CreateImpl(groupData.Flags, fullEnumName)};
+                         => {(data.IsFlags 
+                             ? CreateImpl_Flags(groupData.Flags, fullEnumName) 
+                             : CreateImpl_Normal(groupData.Flags, fullEnumName))};
                  
                  """);
         }
@@ -142,13 +144,20 @@ public partial class IsGroupExtensionGenerator : IIncrementalGenerator {
                          /// </summary>
                          [Pure]
                          [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                         {am} bool {name} => {VALUE_NAME} is {CreateImpl(groupData.Flags, fullEnumName)};
+                         {am} bool {name} 
+                              => {(data.IsFlags 
+                                  ? CreateImpl_Flags(groupData.Flags, fullEnumName) 
+                                  : CreateImpl_Normal(groupData.Flags, fullEnumName))};
                  
                  """);
         }
 
-        static string CreateImpl(string[] flags, string enumName) {
-            return flags.Select(f => $"{enumName}.{f}").Aggregate((a, b) => $"{a} or {b}");
+        static string CreateImpl_Normal(string[] flags, string enumName) {
+            return $"{VALUE_NAME} is {flags.Select(f => $"{enumName}.{f}").Aggregate((a, b) => $"{a} or {b}")}";
+        }
+        
+        static string CreateImpl_Flags(string[] flags, string enumName) {
+            return flags.Select(f => $"{VALUE_NAME}.HasFlag({enumName}.{f})").Aggregate((a, b) => $"{a} || {b}");
         }
     }
 }

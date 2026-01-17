@@ -119,27 +119,73 @@ then the generated extension properties will be automatically named `HasFlagA`, 
 You can also exclude different flags from the generated extension methods by using the
 `ExcludeFlagAttribute` attribute or even whole enums by using the `ExcludeFlagEnumAttribute`.
 
+## Enum Item Groups
+
+You can also group flags and enum items into different groups using the
+`FlagGroupAttribute`.
+
+```c#
+[FlagGroup("GroupA")]
+[FlagGroup("GroupB")]
+enum MyFlags
+{
+    [FlagGroup("GroupA")]
+    FlagA,
+    
+    [FlagGroup("GroupA")]
+    [FlagGroup("GroupB")]
+    FlagB,
+    
+    [FlagGroup("GroupB")]
+    FlagC,
+}
+```
+
+`GetIsGroupA` and `GetIsGroupB` extension methods will be generated for the enum (as
+well as the extension properties for dotnet 10.0 and higher). This method will return
+`true` if the value of the enum contains any of the items from the group. Example usage
+can be seen below:
+
+```c#
+var a = MyFlags.FlagA;
+Console.WriteLine(a.GetIsGroupA()); // true
+Console.WriteLine(a.GetIsGroupB()); // false
+```
+
+> **Important:**
+> You need to first declare the group on the enum declaration for it to be recognized.
+
+You can also specify a custom prefix for the generated extension methods:
+
+```c#
+[FlagGroup("GroupA", "Allows")]
+[FlagGroup("GroupB")]
+enum MyFlags
+{
+    // ...
+```
+
+The code above will change the name of the `GetIsGroupA` extension
+method to `GetAllowsGroupA`.
+
 ## Installation
 
 ### DotNet CLI
 
 ```bash
-dotnet add package HasFlagExtension
-dotnet add package HasFlagExtension.Attributes
+dotnet add package HasFlagExtension.Generator
 ```
 
 ### NuGet CLI
 
 ```bash
-Package-Install HasFlagExtension
-Package-Install HasFlagExtension.Attributes
+Package-Install HasFlagExtension.Generator
 ```
 
 ### .csproj
 
 ```xml
 <ItemGroup>
-    <PackageReference Include="HasFlagExtension" Version="1.1.0.1"/>
-    <PackageReference Include="HasFlagExtension.Attributes" Version="1.1.0"/>
+    <PackageReference Include="HasFlagExtension.Generator" Version="*"/>
 </ItemGroup>
 ```

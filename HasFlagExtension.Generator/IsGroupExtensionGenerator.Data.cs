@@ -28,6 +28,7 @@ public partial class IsGroupExtensionGenerator {
         public string FullName { get; }
         public string Namespace { get; }
         public EnumNamingInfo? Naming { get; }
+        public bool IsFlags { get; }
 
         public EnumAnalysisData(
             GroupData[]     data,
@@ -35,7 +36,8 @@ public partial class IsGroupExtensionGenerator {
             string          enumName,
             string          ns,
             string          fullName,
-            EnumNamingInfo? naming)
+            EnumNamingInfo? naming,
+            bool            isFlags)
         {
             Data          = data;
             Accessibility = accessibility;
@@ -43,6 +45,7 @@ public partial class IsGroupExtensionGenerator {
             Namespace     = ns;
             FullName      = fullName;
             Naming        = naming;
+            IsFlags       = isFlags;
         }
 
         public override string ToString() =>
@@ -54,6 +57,7 @@ public partial class IsGroupExtensionGenerator {
                   FullName: {{FullName}}
                   Namespace: {{Namespace}}
                   Naming: {{Naming}}
+                  IsFlags: {{IsFlags}}
               }
               """;
     }
