@@ -1,10 +1,10 @@
 // HasFlagExtension Generator
 // Copyright (c) 2026 KryKom
 
-namespace HasFlagExtension.Generator;
+namespace HasFlagExtension.Analyzers;
 
 internal static class Global {
-    internal const string HFNS = nameof(HasFlagExtension);
+    internal const string HFNS = "HasFlagExtension";
 
     internal const string AUTOGEN_HEADER =
         """

@@ -21,14 +21,14 @@ public partial class HasFlagExtensionGenerator {
     }
     
     private static EnumInfo? GetEnumInfo(INamedTypeSymbol symbol, ImmutableArray<Diagnostic>.Builder diag) {
-        var access   = symbol.DeclaredAccessibility;
+        var access = GetEffectiveAccessibility(symbol);
 
         // skip enums with invalid accessibility
         if (access is not Accessibility.Public and not Accessibility.Internal)
             return null;
         
         var name     = symbol.Name;
-        var fullName = symbol.ToDisplayString();
+        var fullName = symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
         var ns       = symbol.ContainingNamespace.ToDisplayString();
         
         var prefix  = GetEnumPrefix(symbol, diag);
@@ -38,6 +38,23 @@ public partial class HasFlagExtensionGenerator {
         var flags = GetFlags(symbol, diag);
 
         return new EnumInfo(name, ns, fullName, flags, exclude, access, prefix, naming);
+    }
+
+    private static Accessibility GetEffectiveAccessibility(ISymbol symbol) {
+        var accessibility = symbol.DeclaredAccessibility;
+        
+        var current = symbol.ContainingType;
+        while (current != null) {
+            var containerAccessibility = current.DeclaredAccessibility;
+            
+            if (containerAccessibility < accessibility) {
+                accessibility = containerAccessibility;
+            }
+            
+            current = current.ContainingType;
+        }
+        
+        return accessibility;
     }
 
     private static string? GetEnumPrefix(INamedTypeSymbol symbol, ImmutableArray<Diagnostic>.Builder diag) {

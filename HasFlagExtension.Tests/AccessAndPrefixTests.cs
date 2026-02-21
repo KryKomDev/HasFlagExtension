@@ -23,12 +23,72 @@ public class AccessAndPrefixTests {
 
         namespace HasFlagExtension;
 
-        [AttributeUsage(AttributeTargets.Enum)]
-        public class HasFlagPrefixAttribute : Attribute {
+        public enum NamingCase : byte {
+            CAMEL = 0,
+            PASCAL = 1,
+            SNAKE = 2,
+            SCREAMING_SNAKE = 3,
+            KEBAB = 4,
+            SPACED_CAMEL = 5,
+            TRAIN = 6,
+            UNKNOWN
+        }
+
+        [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Enum)]
+        public class EnumNamingAttribute : Attribute {
+            public NamingCase EnumNamingCase { get; }
+            public NamingCase MethodNamingCase { get; }
             
+            public EnumNamingAttribute(NamingCase enumNamingCase, NamingCase methodNamingCase) {
+                EnumNamingCase = enumNamingCase;
+                MethodNamingCase = methodNamingCase;
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Enum)]
+        public class ExcludeFlagEnumAttribute : Attribute {
+            public bool Exclude { get; }
+            public ExcludeFlagEnumAttribute(bool exclude = true) {
+                Exclude = exclude;
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Field)]
+        public class ExcludeFlagAttribute : Attribute {
+            public bool Exclude { get; }
+            public ExcludeFlagAttribute(bool exclude = true) {
+                Exclude = exclude;
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field)]
+        public class HasFlagPrefixAttribute : Attribute {
+            public string Prefix { get; }
+            public HasFlagPrefixAttribute(string prefix) {
+                Prefix = prefix;
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Field)]
+        public class FlagDisplayNameAttribute : Attribute {
+            public string DisplayName { get; }
+            public FlagDisplayNameAttribute(string displayName) {
+                DisplayName = displayName;
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field, AllowMultiple = true)]
+        public class FlagGroupAttribute : Attribute {
+            public string Group { get; }
             public string Prefix { get; }
             
-            public HasFlagPrefixAttribute(string prefix) {
+            public FlagGroupAttribute(string group) {
+                Group = group;
+                Prefix = string.Empty;
+            }
+            
+            public FlagGroupAttribute(string group, string prefix) {
+                Group = group;
                 Prefix = prefix;
             }
         }
@@ -72,43 +132,43 @@ public class AccessAndPrefixTests {
                   /// </summary>
                   [Pure]
                   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                  {{am}} static bool Get{{prefix}}A(this TestNamespace.TestEnum val) => val.HasFlag(TestNamespace.TestEnum.A);
+                  {{am}} static bool Get{{prefix}}A(this global::TestNamespace.TestEnum val) => val.HasFlag(global::TestNamespace.TestEnum.A);
 
                   /// <summary>
                   /// Returns true if the flag B is present in the value.
                   /// </summary>
                   [Pure]
                   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                  {{am}} static bool Get{{prefix}}B(this TestNamespace.TestEnum val) => val.HasFlag(TestNamespace.TestEnum.B);
+                  {{am}} static bool Get{{prefix}}B(this global::TestNamespace.TestEnum val) => val.HasFlag(global::TestNamespace.TestEnum.B);
 
                   /// <summary>
                   /// Returns true if the flag C is present in the value.
                   /// </summary>
                   [Pure]
                   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                  {{am}} static bool Get{{prefix}}C(this TestNamespace.TestEnum val) => val.HasFlag(TestNamespace.TestEnum.C);
+                  {{am}} static bool Get{{prefix}}C(this global::TestNamespace.TestEnum val) => val.HasFlag(global::TestNamespace.TestEnum.C);
 
               #if NET10_0_OR_GREATER
 
-                  extension(TestNamespace.TestEnum val) {
+                  extension(global::TestNamespace.TestEnum val) {
 
                       /// <summary>
                       /// Returns true if the flag A is present in the value.
                       /// </summary>
                       [Pure]
-                      {{am}} bool {{prefix}}A => val.HasFlag(TestNamespace.TestEnum.A);
+                      {{am}} bool {{prefix}}A => val.HasFlag(global::TestNamespace.TestEnum.A);
 
                       /// <summary>
                       /// Returns true if the flag B is present in the value.
                       /// </summary>
                       [Pure]
-                      {{am}} bool {{prefix}}B => val.HasFlag(TestNamespace.TestEnum.B);
+                      {{am}} bool {{prefix}}B => val.HasFlag(global::TestNamespace.TestEnum.B);
 
                       /// <summary>
                       /// Returns true if the flag C is present in the value.
                       /// </summary>
                       [Pure]
-                      {{am}} bool {{prefix}}C => val.HasFlag(TestNamespace.TestEnum.C);
+                      {{am}} bool {{prefix}}C => val.HasFlag(global::TestNamespace.TestEnum.C);
                   }
               #endif
 
@@ -146,5 +206,84 @@ public class AccessAndPrefixTests {
         
         Assert.Equal(GetGeneratedClass(prefix, isIntern), generatedFileSyntax.GetText().ToString(), 
             ignoreLineEndingDifferences: true, ignoreWhiteSpaceDifferences: true, ignoreAllWhiteSpace: true);
+    }
+
+    [Fact]
+    public void GenerateHasFlagMethods_NestedInInternalClass() {
+        var source = """
+            using System;
+            using HasFlagExtension;
+
+            namespace TestNamespace;
+
+            internal class Outer {
+                [Flags]
+                public enum InnerEnum {
+                    A, B
+                }
+            }
+            """;
+
+        var generator = new HasFlagExtensionGenerator();
+        var driver = CSharpGeneratorDriver.Create(generator);
+        var compilation = CSharpCompilation.Create("Test",
+            [
+                CSharpSyntaxTree.ParseText(ATTRIBUTE_SOURCE),
+                CSharpSyntaxTree.ParseText(source),
+            ],
+            [
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location)
+            ]
+        );
+
+        var runResult = driver.RunGenerators(compilation).GetRunResult();
+        var generatedFileSyntax = runResult.GeneratedTrees.Single(t => t.FilePath.EndsWith("Extensions.g.cs"));
+        var generatedText = generatedFileSyntax.GetText().ToString();
+
+        _testOutputHelper.WriteLine(generatedText);
+
+        // Should be internal because Outer is internal
+        Assert.Contains("internal static partial class InnerEnumExtensions", generatedText);
+        Assert.Contains("internal static bool GetHasA", generatedText);
+    }
+
+    [Fact]
+    public void IsGroupExtensionGenerator_NestedInInternalClass() {
+        var source = """
+            using System;
+            using HasFlagExtension;
+
+            namespace TestNamespace;
+
+            internal class Outer {
+                [FlagGroup("Read")]
+                public enum InnerEnum {
+                    [FlagGroup("Read")]
+                    A, B
+                }
+            }
+            """;
+
+        var generator = new IsGroupExtensionGenerator();
+        var driver = CSharpGeneratorDriver.Create(generator);
+        var compilation = CSharpCompilation.Create("Test",
+            [
+                CSharpSyntaxTree.ParseText(ATTRIBUTE_SOURCE),
+                CSharpSyntaxTree.ParseText(source),
+            ],
+            [
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location)
+            ]
+        );
+
+        var runResult = driver.RunGenerators(compilation).GetRunResult();
+        var generatedFileSyntax = runResult.GeneratedTrees.Single(t => t.FilePath.EndsWith("Extensions.g.cs"));
+        var generatedText = generatedFileSyntax.GetText().ToString();
+
+        _testOutputHelper.WriteLine(generatedText);
+
+        // Should be internal because Outer is internal
+        Assert.Contains("internal static partial class InnerEnumExtensions", generatedText);
+        Assert.Contains("internal static bool GetIsRead", generatedText);
     }
 }

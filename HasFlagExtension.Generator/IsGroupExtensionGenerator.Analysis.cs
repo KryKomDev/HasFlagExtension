@@ -25,14 +25,14 @@ public partial class IsGroupExtensionGenerator {
         INamedTypeSymbol symbol, 
         DiagBuilder      diagnostics) 
     {
-        var access = symbol.DeclaredAccessibility;
+        var access = GetEffectiveAccessibility(symbol);
 
         // skip enums with invalid accessibility
         if (access is not Accessibility.Public and not Accessibility.Internal)
             return null;
         
         var name     = symbol.Name;
-        var fullName = symbol.ToDisplayString();
+        var fullName = symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
         var ns       = symbol.ContainingNamespace.ToDisplayString();
         var isFlags  = symbol.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() == "System.FlagsAttribute");
         
@@ -56,6 +56,23 @@ public partial class IsGroupExtensionGenerator {
         }
         
         return new EnumAnalysisData(groups, access, name, ns, fullName, GetNaming(symbol, diagnostics), isFlags);
+    }
+
+    private static Accessibility GetEffectiveAccessibility(ISymbol symbol) {
+        var accessibility = symbol.DeclaredAccessibility;
+        
+        var current = symbol.ContainingType;
+        while (current != null) {
+            var containerAccessibility = current.DeclaredAccessibility;
+            
+            if (containerAccessibility < accessibility) {
+                accessibility = containerAccessibility;
+            }
+            
+            current = current.ContainingType;
+        }
+        
+        return accessibility;
     }
     
     private static GroupDeclarationInfo[] GetGroupDecls(INamedTypeSymbol symbol, DiagBuilder diag) {

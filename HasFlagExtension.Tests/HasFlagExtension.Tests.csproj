@@ -26,6 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\HasFlagExtension.Analyzers\HasFlagExtension.Analyzers.csproj" />
+        <ProjectReference Include="..\HasFlagExtension.CodeFixes\HasFlagExtension.CodeFixes.csproj" />
         <ProjectReference Include="..\HasFlagExtension.Generator\HasFlagExtension.Generator.csproj" />
     </ItemGroup>
     

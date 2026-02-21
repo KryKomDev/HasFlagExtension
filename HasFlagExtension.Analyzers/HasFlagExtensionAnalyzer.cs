@@ -1,10 +1,10 @@
 // HasFlagExtension Generator
 // Copyright (c) 2026 KryKom
 
-namespace HasFlagExtension.Generator;
+namespace HasFlagExtension.Analyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-internal class HasFlagExtensionAnalyzer : DiagnosticAnalyzer {
+public class HasFlagExtensionAnalyzer : DiagnosticAnalyzer {
     
     public override void Initialize(AnalysisContext context) {
         context.EnableConcurrentExecution();
@@ -225,7 +225,7 @@ internal class HasFlagExtensionAnalyzer : DiagnosticAnalyzer {
     
     // internal shit
     
-    internal static readonly DiagnosticDescriptor InvalidEnumSyntax = new(
+    public static readonly DiagnosticDescriptor InvalidEnumSyntax = new(
         id: "HFE1000",
         title: "Invalid Enum Syntax",
         messageFormat: "Cannot generate HasFlag extension, invalid syntax",   

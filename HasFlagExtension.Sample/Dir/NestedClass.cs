@@ -2,7 +2,7 @@ using System;
 
 namespace HasFlagExtension.Sample.Dir;
 
-public class NestedClass {
+internal class NestedClass {
     
     [Flags]
     public enum NestedEnum {

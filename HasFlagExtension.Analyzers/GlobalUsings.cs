@@ -16,7 +16,5 @@ global using Microsoft.CodeAnalysis.Text;
 global using static HasFlagExtension.Analyzers.Global;
 global using static HasFlagExtension.Analyzers.HasFlagExtensionAnalyzer;
 global using static HasFlagExtension.Analyzers.NamingAnalyzer;
-global using HasFlagExtension.Analyzers;
-global using HasFlagExtension;
 global using static Microsoft.CodeAnalysis.Diagnostics.GeneratedCodeAnalysisFlags;
 global using DiagBuilder = System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.Diagnostic>.Builder;

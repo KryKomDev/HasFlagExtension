@@ -13,7 +13,7 @@
 
         <Authors>KryKom</Authors>
         <Company>KryKom</Company>
-        <Version>2.1.2</Version>
+        <Version>2.2.1</Version>
         <PackageProjectUrl>https://github.com/KryKomDev/HasFlagExtension</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Description>C# source generator for generating extension methods and properties for flag enums.</Description>
@@ -32,11 +32,17 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.0.0" />
     </ItemGroup>
-    
+
+    <ItemGroup>
+        <ProjectReference Include="..\HasFlagExtension.Analyzers\HasFlagExtension.Analyzers.csproj" PrivateAssets="all" />
+        <ProjectReference Include="..\HasFlagExtension.CodeFixes\HasFlagExtension.CodeFixes.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
     <ItemGroup>
         <None Include="$(OutputPath)/**/*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="..\HasFlagExtension.Analyzers\bin\$(Configuration)\netstandard2.0\HasFlagExtension.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="..\HasFlagExtension.CodeFixes\bin\$(Configuration)\netstandard2.0\HasFlagExtension.CodeFixes.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     </ItemGroup>
 
     <ItemGroup>
@@ -46,12 +52,8 @@
 
     <!--  embed the attributes and naming enum so they can be generated  -->
     <ItemGroup>
-        <EmbeddedResource Include="./Templates/Attributes.cs" />
-        <EmbeddedResource Include="./Templates/NamingCase.cs" />
+        <EmbeddedResource Include="..\HasFlagExtension.Analyzers/Templates/Attributes.cs" LogicalName="HasFlagExtension.Generator.Templates.Attributes.cs" />
+        <EmbeddedResource Include="..\HasFlagExtension.Analyzers/Templates/NamingCase.cs" LogicalName="HasFlagExtension.Generator.Templates.NamingCase.cs" />
     </ItemGroup>
 
-    <ItemGroup>
-        <AdditionalFiles Include="AnalyzerReleases\AnalyzerReleases.Shipped.md" />
-        <AdditionalFiles Include="AnalyzerReleases\AnalyzerReleases.Unshipped.md" />
-    </ItemGroup>
 </Project>

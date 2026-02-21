@@ -148,30 +148,30 @@ public class FeatureTests {
                 /// </summary>
                 [Pure]
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                public static bool GetHasA(this TestNamespace.TestEnum val) => val.HasFlag(TestNamespace.TestEnum.A);
+                public static bool GetHasA(this global::TestNamespace.TestEnum val) => val.HasFlag(global::TestNamespace.TestEnum.A);
 
                 /// <summary>
                 /// Returns true if the flag C is present in the value.
                 /// </summary>
                 [Pure]
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                public static bool GetHasC(this TestNamespace.TestEnum val) => val.HasFlag(TestNamespace.TestEnum.C);
+                public static bool GetHasC(this global::TestNamespace.TestEnum val) => val.HasFlag(global::TestNamespace.TestEnum.C);
 
             #if NET10_0_OR_GREATER
 
-                extension (TestNamespace.TestEnum val) {
+                extension (global::TestNamespace.TestEnum val) {
 
                          /// <summary>
                          /// Returns true if the flag A is present in the value.
                          /// </summary>
                          [Pure]
-                         public bool HasA => val.HasFlag(TestNamespace.TestEnum.A);
+                         public bool HasA => val.HasFlag(global::TestNamespace.TestEnum.A);
 
                          /// <summary>
                          /// Returns true if the flag C is present in the value.
                          /// </summary>
                          [Pure]
-                         public bool HasC => val.HasFlag(TestNamespace.TestEnum.C);
+                         public bool HasC => val.HasFlag(global::TestNamespace.TestEnum.C);
                 }
             #endif
 
@@ -197,8 +197,8 @@ public class FeatureTests {
             }
             """;
          
-         var expectedFragment = "bool GetHasIsA(this TestNamespace.TestEnum val)";
-         var expectedFragment2 = "bool HasIsA => val.HasFlag";
+         var expectedFragment = "bool GetHasIsA(this global::TestNamespace.TestEnum val)";
+         var expectedFragment2 = "bool HasIsA => val.HasFlag(global::TestNamespace.TestEnum.A)";
 
          RunGenerator(source, out var outputComp);
          var generatedText = GetGeneratedText(outputComp);
@@ -223,8 +223,8 @@ public class FeatureTests {
             }
             """;
          
-         var expectedFragmentA = "bool GetIsA(this TestNamespace.TestEnum val)";
-         var expectedFragmentB = "bool GetHasB(this TestNamespace.TestEnum val)";
+         var expectedFragmentA = "bool GetIsA(this global::TestNamespace.TestEnum val)";
+         var expectedFragmentB = "bool GetHasB(this global::TestNamespace.TestEnum val)";
 
          RunGenerator(source, out var outputComp);
          var generatedText = GetGeneratedText(outputComp);
@@ -249,8 +249,8 @@ public class FeatureTests {
             }
             """;
          
-         var expectedFragment1 = "bool GetHasFlagOne(this TestNamespace.TestEnum val)";
-         var expectedFragment2 = "bool GetHasFlagTwo(this TestNamespace.TestEnum val)";
+         var expectedFragment1 = "bool GetHasFlagOne(this global::TestNamespace.TestEnum val)";
+         var expectedFragment2 = "bool GetHasFlagTwo(this global::TestNamespace.TestEnum val)";
 
          RunGenerator(source, out var outputComp);
          var generatedText = GetGeneratedText(outputComp);
@@ -299,19 +299,19 @@ public class FeatureTests {
                 /// </summary>
                 [Pure]
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                public static bool GetIsRead(this TestNamespace.TestEnum val) 
-                    => val is TestNamespace.TestEnum.A or TestNamespace.TestEnum.B;
+                public static bool GetIsRead(this global::TestNamespace.TestEnum val) 
+                    => val is global::TestNamespace.TestEnum.A or global::TestNamespace.TestEnum.B;
                 /// <summary>
                 /// Returns true if the enum value is a member of the 'Write' group.
                 /// </summary>
                 [Pure]
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                public static bool GetIsWrite(this TestNamespace.TestEnum val) 
-                    => val is TestNamespace.TestEnum.C;
+                public static bool GetIsWrite(this global::TestNamespace.TestEnum val) 
+                    => val is global::TestNamespace.TestEnum.C;
             
             #if DOTNET_10_OR_GREATER
 
-                extension(TestNamespace.TestEnum val) {
+                extension(global::TestNamespace.TestEnum val) {
 
                     /// <summary>
                     /// Returns true if the enum value is a member of the 'Read' group.
@@ -319,14 +319,14 @@ public class FeatureTests {
                     [Pure]
                     [MethodImpl(MethodImplOptions.AggressiveInlining)]
                     public bool IsRead 
-                        => val is TestNamespace.TestEnum.A or TestNamespace.TestEnum.B;
+                        => val is global::TestNamespace.TestEnum.A or global::TestNamespace.TestEnum.B;
                     /// <summary>
                     /// Returns true if the enum value is a member of the 'Write' group.
                     /// </summary>
                     [Pure]
                     [MethodImpl(MethodImplOptions.AggressiveInlining)]
                     public bool IsWrite 
-                        => val is TestNamespace.TestEnum.C;
+                        => val is global::TestNamespace.TestEnum.C;
                 }
                 
             #endif

@@ -1,13 +1,13 @@
 // HasFlagExtension Generator
 // Copyright (c) 2026 KryKom
 
-namespace HasFlagExtension.Generator;
+namespace HasFlagExtension.Analyzers;
 
 internal static class NamingAnalyzer {
 
     internal static EnumNamingInfo? GetNaming(INamedTypeSymbol enumSymbol, DiagBuilder diag) {
         var attr = enumSymbol.GetAttributes()
-            .FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == $"{HFNS}.{nameof(EnumNamingAttribute)}");
+            .FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == $"{HFNS}.EnumNamingAttribute");
         
         if (attr is null) return null;
         

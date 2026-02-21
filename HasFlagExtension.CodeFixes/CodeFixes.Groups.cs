@@ -4,16 +4,14 @@
 using System.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CodeFixes;
 
-namespace HasFlagExtension.Generator;
+namespace HasFlagExtension.CodeFixes;
 
 [Shared]
 [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(HfeCodeFixes))]
-public partial class HfeCodeFixes : CodeFixProvider {
+public class HfeCodeFixes : CodeFixProvider {
     
-    public sealed override ImmutableArray<string> FixableDiagnosticIds => [UnknownGroupName.Id];
+    public sealed override ImmutableArray<string> FixableDiagnosticIds => [HasFlagExtensionAnalyzer.UnknownGroupName.Id];
 
     public sealed override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 

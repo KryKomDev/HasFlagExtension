@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="HasFlagExtension.Analyzers/HasFlagExtension.Analyzers.csproj" />
+  <Project Path="HasFlagExtension.CodeFixes/HasFlagExtension.CodeFixes.csproj" />
   <Project Path="HasFlagExtension.Generator\HasFlagExtension.Generator.csproj" Type="Classic C#" />
   <Project Path="HasFlagExtension.Sample/HasFlagExtension.Sample.csproj" />
   <Project Path="HasFlagExtension.Tests/HasFlagExtension.Tests.csproj" />

@@ -11,14 +11,14 @@
     </PropertyGroup>
 
     <ItemGroup Condition="'$(LocalPackagingTest)' == 'true'">
-        <PackageReference Include="HasFlagExtension.Generator" Version="*" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
+        <PackageReference Include="HasFlagExtension.Generator" Version="2.2.1" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup Condition="'$(LocalPackagingTest)' == 'false'">
-        <ProjectReference Include="../HasFlagExtension.Generator/HasFlagExtension.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </ProjectReference>
+        <ProjectReference Include="../HasFlagExtension.Analyzers/HasFlagExtension.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="../HasFlagExtension.CodeFixes/HasFlagExtension.CodeFixes.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="../HasFlagExtension.Generator/HasFlagExtension.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 </Project>
