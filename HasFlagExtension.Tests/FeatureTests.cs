@@ -173,6 +173,7 @@ public class FeatureTests {
                          [Pure]
                          public bool HasC => val.HasFlag(global::TestNamespace.TestEnum.C);
                 }
+
             #endif
 
             }
@@ -294,39 +295,41 @@ public class FeatureTests {
 
             public static partial class TestEnumExtensions {
 
+
                 /// <summary>
                 /// Returns true if the enum value is a member of the 'Read' group.
                 /// </summary>
                 [Pure]
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                public static bool GetIsRead(this global::TestNamespace.TestEnum val) 
-                    => val is global::TestNamespace.TestEnum.A or global::TestNamespace.TestEnum.B;
+                public static bool GetIsRead(this global::TestNamespace.TestEnum val) => 
+                    val is global::TestNamespace.TestEnum.A or global::TestNamespace.TestEnum.B;
+
                 /// <summary>
                 /// Returns true if the enum value is a member of the 'Write' group.
                 /// </summary>
                 [Pure]
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                public static bool GetIsWrite(this global::TestNamespace.TestEnum val) 
-                    => val is global::TestNamespace.TestEnum.C;
-            
-            #if DOTNET_10_OR_GREATER
+                public static bool GetIsWrite(this global::TestNamespace.TestEnum val) => 
+                    val is global::TestNamespace.TestEnum.C;
+
+            #if NET10_0_OR_GREATER
 
                 extension(global::TestNamespace.TestEnum val) {
 
-                    /// <summary>
-                    /// Returns true if the enum value is a member of the 'Read' group.
-                    /// </summary>
-                    [Pure]
-                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                    public bool IsRead 
-                        => val is global::TestNamespace.TestEnum.A or global::TestNamespace.TestEnum.B;
-                    /// <summary>
-                    /// Returns true if the enum value is a member of the 'Write' group.
-                    /// </summary>
-                    [Pure]
-                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                    public bool IsWrite 
-                        => val is global::TestNamespace.TestEnum.C;
+
+                        /// <summary>
+                        /// Returns true if the enum value is a member of the 'Read' group.
+                        /// </summary>
+                        [Pure]
+                        public bool IsRead => 
+                            val is global::TestNamespace.TestEnum.A or global::TestNamespace.TestEnum.B;
+
+                        /// <summary>
+                        /// Returns true if the enum value is a member of the 'Write' group.
+                        /// </summary>
+                        [Pure]
+                        public bool IsWrite => 
+                            val is global::TestNamespace.TestEnum.C;
                 }
                 
             #endif

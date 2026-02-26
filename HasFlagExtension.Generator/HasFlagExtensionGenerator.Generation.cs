@@ -146,6 +146,7 @@ public partial class HasFlagExtensionGenerator :  IIncrementalGenerator {
         sb.Append(
             """
                 }
+            
             #endif
             
             }

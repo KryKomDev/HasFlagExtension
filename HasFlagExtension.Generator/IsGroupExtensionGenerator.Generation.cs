@@ -93,11 +93,11 @@ public partial class IsGroupExtensionGenerator : IIncrementalGenerator {
         foreach (var d in data.Data) {
             AddImpl_Method(d);
         }
-
+        
         sb.AppendLine(
             $$"""
               
-              #if DOTNET_10_OR_GREATER
+              #if NET10_0_OR_GREATER
               
                   extension({{fullEnumName}} {{VALUE_NAME}}) {
                   
@@ -122,13 +122,14 @@ public partial class IsGroupExtensionGenerator : IIncrementalGenerator {
             var name = "Get" + groupData.Prefix + NameConvertor.Convert(groupData.Name, nm);
             sb.Append(
                 $"""
+                 
                      /// <summary>
                      /// Returns true if the enum value is a member of the '{groupData.Name}' group.
                      /// </summary>
                      [Pure]
                      [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                     {am} static bool {name}(this {fullEnumName} {VALUE_NAME}) 
-                         => {(data.IsFlags 
+                     {am} static bool {name}(this {fullEnumName} {VALUE_NAME}) => 
+                         {(data.IsFlags 
                              ? CreateImpl_Flags(groupData.Flags, fullEnumName) 
                              : CreateImpl_Normal(groupData.Flags, fullEnumName))};
                  
@@ -137,27 +138,36 @@ public partial class IsGroupExtensionGenerator : IIncrementalGenerator {
         
         void AddImpl_Property(GroupData groupData) {
             var name = groupData.Prefix + NameConvertor.Convert(groupData.Name, nm);
-            sb.Append(
+            sb.AppendLine(
                 $"""
+                 
                          /// <summary>
                          /// Returns true if the enum value is a member of the '{groupData.Name}' group.
                          /// </summary>
                          [Pure]
-                         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                         {am} bool {name} 
-                              => {(data.IsFlags 
-                                  ? CreateImpl_Flags(groupData.Flags, fullEnumName) 
-                                  : CreateImpl_Normal(groupData.Flags, fullEnumName))};
-                 
+                         {am} bool {name} => 
+                             {(data.IsFlags 
+                                 ? CreateImpl_Flags(groupData.Flags, fullEnumName) 
+                                 : CreateImpl_Normal(groupData.Flags, fullEnumName))};
                  """);
         }
 
         static string CreateImpl_Normal(string[] flags, string enumName) {
-            return $"{VALUE_NAME} is {flags.Select(f => $"{enumName}.{f}").Aggregate((a, b) => $"{a} or {b}")}";
+            var flagNames = flags.Select(f => $"{enumName}.{f}").ToArray();
+            var expr = flagNames.Length > 0 
+                ? string.Join(" or ", flagNames)
+                : "false";
+            
+            return $"{VALUE_NAME} is {expr}";
         }
         
         static string CreateImpl_Flags(string[] flags, string enumName) {
-            return flags.Select(f => $"{VALUE_NAME}.HasFlag({enumName}.{f})").Aggregate((a, b) => $"{a} || {b}");
+            var hasFlags = flags.Select(f => $"{VALUE_NAME}.HasFlag({enumName}.{f})").ToArray();
+            var expr = hasFlags.Length > 0 
+                ? string.Join(" || ", hasFlags) 
+                : "false";
+            
+            return expr;
         }
     }
 }

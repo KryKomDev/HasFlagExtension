@@ -125,7 +125,7 @@ public class AccessAndPrefixTests {
 
               namespace TestNamespace;
 
-              {{am}} static partial class TestEnumExtensions {
+              {{am}} static partial class TestEnumExtensions {          
 
                   /// <summary>
                   /// Returns true if the flag A is present in the value.
@@ -150,7 +150,7 @@ public class AccessAndPrefixTests {
 
               #if NET10_0_OR_GREATER
 
-                  extension(global::TestNamespace.TestEnum val) {
+                  extension (global::TestNamespace.TestEnum val) {
 
                       /// <summary>
                       /// Returns true if the flag A is present in the value.
@@ -170,6 +170,7 @@ public class AccessAndPrefixTests {
                       [Pure]
                       {{am}} bool {{prefix}}C => val.HasFlag(global::TestNamespace.TestEnum.C);
                   }
+
               #endif
 
               }

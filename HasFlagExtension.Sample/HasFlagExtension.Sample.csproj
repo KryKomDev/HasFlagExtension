@@ -5,13 +5,13 @@
         <Nullable>enable</Nullable>
         <RootNamespace>HasFlagExtension.Sample</RootNamespace>
         <OutputType>exe</OutputType>
-        
-        <LocalPackagingTest>false</LocalPackagingTest>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+
+        <LocalPackagingTest>true</LocalPackagingTest>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(LocalPackagingTest)' == 'true'">
-        <PackageReference Include="HasFlagExtension.Generator" Version="2.2.1" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
+        <PackageReference Include="HasFlagExtension.Generator" Version="2026.1" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
