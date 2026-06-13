@@ -6,13 +6,20 @@ name: Test HasFlagExtension
 on:
   push:
     paths:
-      - 'HasFlagExtension.Generator/**'
-      - 'HasFlagExtension.Tests/**'
+      - 'Src/**'
+      - 'Tests/**'
+      - 'Samples/**'
+      - '.github/workflows/test.yml'
+  pull_request:
+    paths:
+      - 'Src/**'
+      - 'Tests/**'
+      - 'Samples/**'
       - '.github/workflows/test.yml'
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-test:
     strategy:
       matrix:
         configuration: [Debug, Release]
@@ -20,8 +27,9 @@ jobs:
     runs-on: ubuntu-latest 
 
     env:
-      SolutionName: ./HasFlagExtension.sln
-      TestProjectPath: ./HasFlagExtension.Tests/HasFlagExtension.Tests.csproj
+      SolutionPath: ./HasFlagExtension.slnx
+      TestProjectPath: ./Tests/HasFlagExtension.Tests.csproj
+      SampleProjectPath: ./Samples/HasFlagExtension.Sample.csproj
 
     steps:
     - name: Checkout
@@ -35,13 +43,13 @@ jobs:
         dotnet-version: 10.0.x
 
     - name: Restore dependencies
-      run: dotnet restore ${{ env.TestProjectPath }}
+      run: dotnet restore ${{ env.SolutionPath }}
 
-    - name: Build projects
-      run: dotnet build ${{ env.TestProjectPath }} --no-restore
+    - name: Build solution
+      run: dotnet build ${{ env.SolutionPath }} --configuration ${{ matrix.configuration }} --no-restore
 
     - name: Execute unit tests
-      run: dotnet test ${{ env.TestProjectPath }} --no-build
+      run: dotnet test ${{ env.TestProjectPath }} --configuration ${{ matrix.configuration }} --no-build
 
-    - name: Restore the application
-      run: dotnet restore ${{ env.TestProjectPath }}
+    - name: Run sample application
+      run: dotnet run --project ${{ env.SampleProjectPath }} --configuration ${{ matrix.configuration }} --no-build

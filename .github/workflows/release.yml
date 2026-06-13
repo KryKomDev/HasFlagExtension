@@ -1,0 +1,51 @@
+name: Release Generator
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  SolutionPath: ./HasFlagExtension.slnx
+  ProjectPath: ./Src/Generator/HasFlagExtension.Generator.csproj
+  TestProjectPath: ./Tests/HasFlagExtension.Tests.csproj
+  SampleProjectPath: ./Samples/HasFlagExtension.Sample.csproj
+  NugetOutputDir: ./nupkg/
+
+jobs:
+  build-test-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.SolutionPath }}
+
+      - name: Build solution
+        run: dotnet build ${{ env.SolutionPath }} --configuration Release --no-restore
+
+      - name: Execute unit tests
+        run: dotnet test ${{ env.TestProjectPath }} --configuration Release --no-build
+
+      - name: Run sample application
+        run: dotnet run --project ${{ env.SampleProjectPath }} --configuration Release --no-build
+
+      - name: Pack Generator
+        run: dotnet pack ${{ env.ProjectPath }} --configuration Release --no-build --output ${{ env.NugetOutputDir }}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ env.NugetOutputDir }}*.nupkg
+          generate_release_notes: true

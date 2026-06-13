@@ -7,13 +7,14 @@ on:
   workflow_dispatch:
 
 env:
-  SolutionName: ./HasFlagExtension.sln
-  ProjectPath: ./HasFlagExtension.Generator/HasFlagExtension.Generator.csproj
-  TestProjectPath: ./HasFlagExtension.Tests/HasFlagExtension.Tests.csproj
+  SolutionPath: ./HasFlagExtension.slnx
+  ProjectPath: ./Src/Generator/HasFlagExtension.Generator.csproj
+  TestProjectPath: ./Tests/HasFlagExtension.Tests.csproj
+  SampleProjectPath: ./Samples/HasFlagExtension.Sample.csproj
   NugetOutputDir: ./nupkg/
 
 jobs:
-  build:
+  build-test-publish:
     runs-on: ubuntu-latest 
 
     steps:
@@ -28,15 +29,18 @@ jobs:
         dotnet-version: '10.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore ${{ env.ProjectPath }}
+      run: dotnet restore ${{ env.SolutionPath }}
 
-    - name: Build
-      run: dotnet build ${{ env.ProjectPath }} --configuration Release --no-restore
+    - name: Build solution
+      run: dotnet build ${{ env.SolutionPath }} --configuration Release --no-restore
   
-    - name: Test
-      run: dotnet test ${{ env.TestProjectPath }}
+    - name: Execute unit tests
+      run: dotnet test ${{ env.TestProjectPath }} --configuration Release --no-build
 
-    - name: Pack
+    - name: Run sample application
+      run: dotnet run --project ${{ env.SampleProjectPath }} --configuration Release --no-build
+
+    - name: Pack Generator
       run: dotnet pack ${{ env.ProjectPath }} --configuration Release --no-build --output ${{ env.NugetOutputDir }}
 
     - name: Push to NuGet
