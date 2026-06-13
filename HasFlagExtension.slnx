@@ -1,7 +1,15 @@
 <Solution>
-  <Project Path="HasFlagExtension.Analyzers/HasFlagExtension.Analyzers.csproj" />
-  <Project Path="HasFlagExtension.CodeFixes/HasFlagExtension.CodeFixes.csproj" />
-  <Project Path="HasFlagExtension.Generator\HasFlagExtension.Generator.csproj" Type="Classic C#" />
-  <Project Path="HasFlagExtension.Sample/HasFlagExtension.Sample.csproj" />
-  <Project Path="HasFlagExtension.Tests/HasFlagExtension.Tests.csproj" />
+    <Folder Name="/Src/">
+        <Project Path="Src/Analyzers/HasFlagExtension.Analyzers.csproj" />
+        <Project Path="Src/CodeFixes/HasFlagExtension.CodeFixes.csproj" />
+        <Project Path="Src/Generator/HasFlagExtension.Generator.csproj" />
+    </Folder>
+
+    <Folder Name="/Tests/">
+        <Project Path="Tests/HasFlagExtension.Tests.csproj" />
+    </Folder>
+    
+    <Folder Name="/Samples/">
+        <Project Path="Samples/HasFlagExtension.Sample.csproj" />
+    </Folder>
 </Solution>

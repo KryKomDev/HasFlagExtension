@@ -1,23 +1,24 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-
 <div align="center">
-    <h1 style="font-family: 'Space Grotesk', monospace">HasFlagExtension</h1>
-    <p style="font-family: 'Space Grotesk', monospace"><b>by KryKom</b></p>
+
+# HasFlagExtension
+
+A source generator for creating `HasFlag` methods and properties.
+
+![GitHub License](https://img.shields.io/github/license/KryKomDev/HasFlagExtension?style=for-the-badge&labelColor=2a313c&color=da3633)
+![GitHub Release](https://img.shields.io/github/v/release/KryKomDev/HasFlagExtension?sort=semver&display_name=release&style=for-the-badge&label=Latest%20stable&labelColor=2a313c&color=db6d28)
+![GitHub Release](https://img.shields.io/github/v/release/KryKomDev/HasFlagExtension?include_prereleases&sort=semver&display_name=release&style=for-the-badge&label=Latest&labelColor=2a313c&color=db6d28)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/KryKomDev/HasFlagExtension?style=for-the-badge&labelColor=2a313c&color=d69a00)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/KryKomDev/HasFlagExtension?style=for-the-badge&labelColor=2a313c&color=3fb950)
+[![Commits per month](https://img.shields.io/github/commit-activity/m/KryKomDev/HasFlagExtension/main?style=for-the-badge&labelColor=%232a313c&color=58a6ff)](https://img.shields.io/github/commit-activity/m/KryKomDev/HasFlagExtension/main?style=for-the-badge&labelColor=%232a313c&color=58a6ff)
+![NuGet Version](https://img.shields.io/nuget/v/HasFlagExtension.Generator?style=for-the-badge&labelColor=2a313c&color=ab7df8&link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FHasFlagExtension.Generator)
+![NuGet Downloads](https://img.shields.io/nuget/dt/HasFlagExtension.Generator?style=for-the-badge&labelColor=2a313c&color=ab7df8)
+
 </div>
 
-<div align="center">
-    <p>
-        <img src="https://img.shields.io/github/license/KryKomDev/HasFlagExtension?style=for-the-badge&amp;labelColor=%235F6473&amp;color=%23F2A0A0" alt="GitHub License" />
-        <a href="https://www.nuget.org/packages/HasFlagExtension.Generator"><img src="https://img.shields.io/nuget/v/HasFlagExtension.Generator?color=F0CA95&amp;style=for-the-badge&amp;labelColor=5F6473" alt="NuGet" /></a>
-        <img src="https://img.shields.io/nuget/dt/HasFlagExtension.Generator?color=E3ED8A&amp;style=for-the-badge&amp;labelColor=5F6473" alt="NuGet Downloads" />
-        <img src="https://img.shields.io/github/actions/workflow/status/KryKomDev/HasFlagExtension/test.yml?style=for-the-badge&amp;labelColor=%235F6473&amp;color=%2395EC7D" alt="GitHub Actions Workflow Status" />
-        <img src="https://img.shields.io/badge/.NET-Standard2.0-7ACFDC?style=for-the-badge&amp;labelColor=5F6473" alt=".NET Standard" />
-    </p>
-</div>
+## About
 
-HasFlagExtension is a simple source generator that creates HasFlag extension methods for flag enums.
+HasFlagExtension is a simple source generator that creates HasFlag extension methods 
+for flag enums.
 
 ## Basic Usage
 
