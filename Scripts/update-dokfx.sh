@@ -1,0 +1,1 @@
+﻿bash <(curl -sS https://krykomdev.github.io/Dokfx/install.sh) --dir ../Docs/templates/dokfx --skip-backup

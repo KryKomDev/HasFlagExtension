@@ -8,6 +8,9 @@
         <IsPackable>false</IsPackable>
         
         <LocalPackagingTest>false</LocalPackagingTest>
+        
+<!--        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>-->
+<!--        <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>-->
     </PropertyGroup>
 
     <ItemGroup Condition="'$(LocalPackagingTest)' == 'true'">
@@ -19,6 +22,9 @@
     <ItemGroup Condition="'$(LocalPackagingTest)' == 'false'">
         <ProjectReference Include="../Src/Analyzers/HasFlagExtension.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="../Src/CodeFixes/HasFlagExtension.CodeFixes.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-        <ProjectReference Include="../Src/Generator/HasFlagExtension.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="../Src/Generator/HasFlagExtension.Generator.csproj" 
+                          OutputItemType="Analyzer" 
+                          ReferenceOutputAssembly="false" 
+                          IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     </ItemGroup>
 </Project>

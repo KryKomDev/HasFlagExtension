@@ -1,0 +1,1 @@
+﻿irm https://krykomdev.github.io/Dokfx/install.ps1 | iex; Install-Dokfx -Dir "../Docs/templates/dokfx/" -SkipBackup
