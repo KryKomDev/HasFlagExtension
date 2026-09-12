@@ -97,7 +97,7 @@ public partial class IsGroupExtensionGenerator : IIncrementalGenerator {
         sb.AppendLine(
             $$"""
               
-              #if NET10_0_OR_GREATER
+              #if NET10_0_OR_GREATER || HFE_ENABLE_EXTENSION_PROPERTIES
               
                   extension({{fullEnumName}} {{VALUE_NAME}}) {
                   

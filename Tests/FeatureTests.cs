@@ -157,7 +157,7 @@ public class FeatureTests {
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
                 public static bool GetHasC(this global::TestNamespace.TestEnum val) => val.HasFlag(global::TestNamespace.TestEnum.C);
 
-            #if NET10_0_OR_GREATER
+            #if NET10_0_OR_GREATER || HFE_ENABLE_EXTENSION_PROPERTIES
 
                 extension (global::TestNamespace.TestEnum val) {
 
@@ -312,7 +312,7 @@ public class FeatureTests {
                 public static bool GetIsWrite(this global::TestNamespace.TestEnum val) => 
                     val is global::TestNamespace.TestEnum.C;
 
-            #if NET10_0_OR_GREATER
+            #if NET10_0_OR_GREATER || HFE_ENABLE_EXTENSION_PROPERTIES
 
                 extension(global::TestNamespace.TestEnum val) {
 

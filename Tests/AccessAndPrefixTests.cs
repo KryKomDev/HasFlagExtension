@@ -148,7 +148,7 @@ public class AccessAndPrefixTests {
                   [MethodImpl(MethodImplOptions.AggressiveInlining)]
                   {{am}} static bool Get{{prefix}}C(this global::TestNamespace.TestEnum val) => val.HasFlag(global::TestNamespace.TestEnum.C);
 
-              #if NET10_0_OR_GREATER
+              #if NET10_0_OR_GREATER || HFE_ENABLE_EXTENSION_PROPERTIES
 
                   extension (global::TestNamespace.TestEnum val) {
 
