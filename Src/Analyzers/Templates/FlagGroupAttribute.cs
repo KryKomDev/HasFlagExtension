@@ -3,12 +3,14 @@
 //      changes to this file may cause incorrect behavior and will be lost if the code is regenerated.
 // </auto-generated>
 
+#pragma warning disable CS0436
+
 using System;
 
 namespace HasFlagExtension;
 
 [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field, AllowMultiple = true)]
-public class FlagGroupAttribute : Attribute {
+internal class FlagGroupAttribute : Attribute {
     public string Group { get; }
     public string Prefix { get; }
     

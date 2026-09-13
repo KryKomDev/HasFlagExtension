@@ -21,6 +21,7 @@ public class TemplatesGenerator : IIncrementalGenerator {
         });
     }
 
+
     private static void RegSrc(IncrementalGeneratorPostInitializationContext context, string name) {
         var assembly     = Assembly.GetExecutingAssembly();
         var resourceName = $"HasFlagExtension.Generator.Templates.{name}.cs";
@@ -35,5 +36,4 @@ public class TemplatesGenerator : IIncrementalGenerator {
 
         context.AddSource($"{name}.g.cs", SourceText.From(source, Encoding.UTF8));
     }
-
 }

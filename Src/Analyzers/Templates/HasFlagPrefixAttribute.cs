@@ -3,12 +3,14 @@
 //      changes to this file may cause incorrect behavior and will be lost if the code is regenerated.
 // </auto-generated>
 
+#pragma warning disable CS0436
+
 using System;
 
 namespace HasFlagExtension;
 
 [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field)]
-public class HasFlagPrefixAttribute : Attribute {
+internal class HasFlagPrefixAttribute : Attribute {
     public string Prefix { get; }
     
     public HasFlagPrefixAttribute(string prefix) {
