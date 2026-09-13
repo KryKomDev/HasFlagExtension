@@ -3,12 +3,14 @@
 //      changes to this file may cause incorrect behavior and will be lost if the code is regenerated.
 // </auto-generated>
 
+#pragma warning disable CS0436
+
 using System;
 
 namespace HasFlagExtension;
 
 [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Enum)]
-public class EnumNamingAttribute : Attribute {
+internal class EnumNamingAttribute : Attribute {
     public NamingCase EnumNamingCase   { get; }
     public NamingCase MethodNamingCase { get; }
     

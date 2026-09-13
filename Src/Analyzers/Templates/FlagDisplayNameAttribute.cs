@@ -3,12 +3,14 @@
 //      changes to this file may cause incorrect behavior and will be lost if the code is regenerated.
 // </auto-generated>
 
+#pragma warning disable CS0436
+
 using System;
 
 namespace HasFlagExtension;
 
 [AttributeUsage(AttributeTargets.Field)]
-public class FlagDisplayNameAttribute : Attribute {
+internal class FlagDisplayNameAttribute : Attribute {
     public string DisplayName { get; }
     
     public FlagDisplayNameAttribute(string displayName) {
