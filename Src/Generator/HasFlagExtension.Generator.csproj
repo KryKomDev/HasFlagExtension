@@ -15,7 +15,7 @@
         <Company>KryKom</Company>
         <Version>2026.3</Version>
         <PackageProjectUrl>https://github.com/KryKomDev/HasFlagExtension</PackageProjectUrl>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageLicenseExpression>MPL-2.0</PackageLicenseExpression>
         <Description>C# source generator for generating extension methods and properties for flag enums.</Description>
 
         <PackageReadmeFile>Package-Readme.md</PackageReadmeFile>
