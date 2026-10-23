@@ -33,3 +33,11 @@ HFE0042 | HasFlagExtension | Error | Invalid Group Prefix
 HFE0043 | HasFlagExtension | Error | Invalid Group Prefix Type
 HFE0044 | HasFlagExtension | Warning | Unknown Group Name
 HFE0045 | HasFlagExtension | Error | Invalid Group Addition
+
+## Release 2026.4.0
+
+### Changed Rules
+
+Rule ID | New Category | New Severity | Old Category | Old Severity | Notes
+--------|--------------|--------------|--------------|--------------|-------
+HFE003 | HasFlagExtension | Info | HasFlagExtension | Warning | HasFlagExtensionAnalyzer
