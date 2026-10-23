@@ -60,7 +60,7 @@ public class HasFlagExtensionAnalyzer : DiagnosticAnalyzer {
         title: "Naming Case not specified",
         messageFormat: "Naming case is not specified for assembly", 
         category: "HasFlagExtension",
-        DiagnosticSeverity.Warning,
+        DiagnosticSeverity.Info,
         isEnabledByDefault: true,
         description: "Naming Case is not specified for assembly, using default (Pascal Case)."
     );
